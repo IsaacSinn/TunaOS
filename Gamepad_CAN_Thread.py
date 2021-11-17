@@ -3,6 +3,7 @@ import threading
 from threading import Thread
 from pubsub import pub
 import time
+import time
 import can
 import at_serial_can
 
@@ -35,29 +36,32 @@ class joystick(threading.Thread):
             else:
                 self.output_power = int(LUD*32768)
 
-            #print(self.output_power)
+            print("output_power: " , self.output_power)
             pub.sendMessage("can.send", message = {"address": 0xFF, "data": [32, self.output_power >> 8 & 0xFF, self.output_power & 0xFF]})
 
 class CAN_Handler(threading.Thread):
 
     def __init__(self):
+        print("CAN_HANDLER INIT")
         pub.subscribe(self.message_listener, "can.send")
         self.bus = at_serial_can.ATSerialBus(channel = "COM3", bitrate=250000)
         threading.Thread.__init__(self.receive(), dameon=True)
 
     def message_listener(self, message):
         msg  = can.Message(arbitration_id = message["address"], data = message["data"], is_extedned_id = False)
-        self.bus.send(msg)
+        print("msg sent:", msg)
+        #self.bus.send(msg)
 
     def receive(self):
-        msg = self.bus.recv(0)
-        print("can bus received: ", msg)
+        time.sleep(0.1)
+        print("msg received")
+        #msg = self.bus.recv(0)
+        #print("can bus received: ", msg)
 
 
 
 if __name__ == '__main__':
+    CAN_Handler = CAN_Handler()
+    CAN_Handler.start()
     joystick = joystick()
     joystick.start()
-
-    CAN_Handler = CAN_Handler()
-    #CAN_Handler.start()
