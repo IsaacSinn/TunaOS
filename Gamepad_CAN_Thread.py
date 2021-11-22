@@ -6,6 +6,8 @@ import time
 import can
 import at_serial_can
 
+output_power = 0
+
 class pygameLoop(threading.Thread):
     def __init__(self):
         super(pygameLoop, self).__init__()
@@ -14,7 +16,8 @@ class pygameLoop(threading.Thread):
         pygame.init()
         while True:
             pygame.event.pump()
-            time.sleep(0.1)
+            pygame.display.flip()
+            time.sleep(0.01)
 
 
 class gui(threading.Thread):
@@ -30,21 +33,25 @@ class gui(threading.Thread):
 
         pygame.font.init()
         self.font = pygame.font.SysFont("Comic Sans MS", 30)
+        self.i = 0
 
     def run(self):
         while self.is_running:
-            print("running")
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.is_running = False
 
-            text = self.font.render(f"", False, (0,0,0))
+            self.i +=1
+            text = self.font.render(f"{self.i}", False, (0,0,0))
+            #self.font.render(f"output_power: {output_power}", False, (0,0,0))
 
             self.screen.blit(self.background, (0, 0))
             self.screen.blit(text, (0,0))
+            time.sleep(0.05)
 
-            pygame.display.update()
+
+
 
 
 
@@ -76,7 +83,8 @@ class joystick(threading.Thread):
             else:
                 self.output_power = int(LUD*32768)
 
-            print("output_power: " , self.output_power)
+            #print("output_power: " , self.output_power)
+            output_power = self.output_power
             pub.sendMessage("can.send", message = {"address": 0xFF, "data": [32, self.output_power >> 8 & 0xFF, self.output_power & 0xFF]})
 
 class CAN_Handler(threading.Thread):
@@ -94,11 +102,13 @@ class CAN_Handler(threading.Thread):
     def run(self):
         while True:
             time.sleep(0.1)
-            print("msg received")
             msg = self.bus.recv(0)
-            #print("can bus received: ", msg)
+            print("can bus received: ", msg)
 
 if __name__ == '__main__':
+    gui = gui()
+    gui.start()
+
     pygameloop = pygameLoop()
     pygameloop.start()
 
@@ -109,6 +119,3 @@ if __name__ == '__main__':
 
     CAN_Handler.start()
     joystick.start()
-
-    gui = gui()
-    gui.start()
