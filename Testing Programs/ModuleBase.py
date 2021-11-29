@@ -15,8 +15,6 @@ class Interval :
             self.__action()
             time.sleep(self.__interval)
 
-        self.__action()
-
     def __cancel(self) :
         self.__stopEvent.set()
 
