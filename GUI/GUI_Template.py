@@ -1,4 +1,4 @@
-from ModuleBase import Module
+from GUI_ModuleBase import Module
 import pygame
 from pubsub import pub
 
@@ -44,16 +44,18 @@ class Joystick(Module):
         for i in range(self.joystick.get_numaxes()):
             self.direct_input[i] = self.joystick.get_axis(i)
 
-        LLR, LUD, BL, RLR, RUD, BR = self.direct_input
-        LLR = 1*deadzoneleft(LLR)
-        LUD = -1*deadzoneleft(LUD)
-        BL = -((BL+1)/2)
-        RLR = 1*deadzoneright(RLR)
-        RUD = -1*deadzoneright(RUD)
-        BR = (BR+1)/2
-        BLR = deadzone_back(BL+BR)
+        LLR, LUD, RLR, RUD, BL, BR = self.direct_input
+        LLR = 1*LLR
+        LUD = -1*LUD
+        RLR = 1*RLR
+        RUD = -1*RUD
 
-        self.movement_message = [LLR,  LUD, -RLR, BLR,  RUD, 0]
+        BL = -((BL + 1) / 2)
+        BR = (BR + 1) / 2
+        BLR = BL + BR
+
+        self.movement_message = [ LLR,  LUD, -RLR, BLR,  RUD, 0]    #(strafe, drive, yaw, updown, tilt, 0)
+
 
         pub.sendMessage("joystick.movement", message = {"joystick_movement": self.movement_message})
 
