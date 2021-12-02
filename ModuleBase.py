@@ -2,36 +2,36 @@ import time
 from threading import Thread
 from threading import Event
 
-class Interval :
+class Interval:
     def __init__(self, interval, action) :
         self.__interval = interval
         self.__action = action
-        self.__stopEvent = Event()
-        thread = Thread(target = self.__setInterval)
-        thread.start()
+        self.__stopEvent = False
+        self.thread = Thread(target = self.__setInterval)
+        self.thread.start()
 
-    def __setInterval(self) :
-        while True:
+    def __setInterval(self):
+        while 1:
             self.__action()
             time.sleep(self.__interval)
 
-    def __cancel(self) :
-        self.__stopEvent.set()
+            if self.__stopEvent:
+                break
+
+    def stopThread(self):
+        self.__stopEvent = True
+        self.thread.join()
+        print("Thread Killed")
+
+
 
 class Module:
-    def __init__(self):
-        self.__running = False
-        pass
-
     def run(self):
         pass
 
-    def start(self, freq=1):
-        self.__running = True
-        self.__interval = 1/freq
+    def start(self, freq = 1):
+        self.__interval = 1 / freq
         self.__thread = Interval(self.__interval, self.run)
 
     def stop(self):
-        if self.__running:
-            self.__thread.__cancel()
-        self.__running = False
+        self.__thread.stopThread()

@@ -36,8 +36,10 @@ class Joystick(Module):
             raise TypeError("No joystick connected")
         self.joystick.init()
 
+        # variables
         self.direct_input = [0 for i in range(6)]
         self.movement_message = [0 for i in range(6)]
+        self.control_invert = False
 
     def run(self):
 
@@ -56,9 +58,9 @@ class Joystick(Module):
         BLR = deadzone_back(BL + BR)
 
         if self.control_invert:
-            self.new_movement_message = [-LLR, -LUD, -RLR, BLR, -RUD, 0]
+            self.movement_message = [-LLR, -LUD, -RLR, BLR, -RUD, 0]
         else:
-            self.new_movement_message = [ LLR,  LUD, -RLR, BLR,  RUD, 0]    #(strafe, drive, yaw, updown, tilt, 0)
+            self.movement_message = [ LLR,  LUD, -RLR, BLR,  RUD, 0]    #(strafe, drive, yaw, updown, tilt, 0)
 
         pub.sendMessage("joystick.movement", message = {"joystick_movement": self.movement_message})
 
