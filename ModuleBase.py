@@ -38,20 +38,34 @@ class Module:
 
 class ModuleManager():
 
-    def __init__(cls):
-        cls.modules = []
-        cls.modules_frequency = []
+    modules = []
 
     @classmethod
-    def register(cls, *args): # mm.register((Module1, freq), (Module2, freq))
-        for pair in args:
-            if pair[0] not in cls.modules:
-                print(f"{pair[0]} = {pair[0]}()")
-                cls.modules.append(pair[0])
-                cls.modules_frequency.append(pair[1])
+    def register(cls, *args): # mm.register(("Module1", "Module1", freq), ("Module2", "Module2", freq))
+        for module_info in args:
+
+            module_file = module_info[0]
+            module_name = module_info[1]
+            module_freq = module_info[2]
+
+            exec(f"from {module_file} import {module_name}")
+            module = eval(f"{module_name}()")
+            cls.modules.append( {"name": module, "freq": module_freq} )
+
+    @classmethod
+    def get_registered_modules(cls):
+        return cls.modules
 
     @classmethod
     def start_all(cls):
-        for index, module in cls.modules:
-            freq = cls.modules_frequency[index]
-            module.start(freq)
+        for module in cls.modules:
+            module_name = module["name"]
+            module_freq = module["freq"]
+
+            module_name.start(module_freq)
+
+    @classmethod
+    def stop(cls, *args):
+        for module in args:
+            cls.modules[module].
+            exec(f"{module}.stop()")

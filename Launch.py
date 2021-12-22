@@ -1,14 +1,9 @@
-from Joystick import Joystick
-from GUI import GUI
-from PyGameLoop import PyGameLoop
 import time
 from ModuleBase import ModuleManager
 
-GUI = GUI()
-GUI.start(60)
-PyGameLoop = PyGameLoop()
-PyGameLoop.start(60)
-Joystick = Joystick()
-Joystick.start(60)
+mm = ModuleManager()
+mm.register(("Joystick", "Joystick", 60), ("PyGameLoop", "PyGameLoop", 60), ("GUI", "GUI", 60))
+mm.start_all()
+
 time.sleep(5)
-Joystick.stop()
+mm.stop("GUI")
