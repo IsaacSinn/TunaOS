@@ -35,3 +35,23 @@ class Module:
 
     def stop(self):
         self.__thread.stopThread()
+
+class ModuleManager():
+
+    def __init__(cls):
+        cls.modules = []
+        cls.modules_frequency = []
+
+    @classmethod
+    def register(cls, *args): # mm.register((Module1, freq), (Module2, freq))
+        for pair in args:
+            if pair[0] not in cls.modules:
+                print(f"{pair[0]} = {pair[0]}()")
+                cls.modules.append(pair[0])
+                cls.modules_frequency.append(pair[1])
+
+    @classmethod
+    def start_all(cls):
+        for index, module in cls.modules:
+            freq = cls.modules_frequency[index]
+            module.start(freq)

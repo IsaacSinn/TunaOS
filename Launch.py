@@ -2,6 +2,7 @@ from Joystick import Joystick
 from GUI import GUI
 from PyGameLoop import PyGameLoop
 import time
+from ModuleBase import ModuleManager
 
 GUI = GUI()
 GUI.start(60)
