@@ -23,8 +23,6 @@ class Interval:
         self.thread.join()
         print("Thread Killed")
 
-
-
 class Module:
     def run(self):
         pass
@@ -50,7 +48,7 @@ class ModuleManager():
 
             exec(f"from {module_file} import {module_name}")
             module = eval(f"{module_name}()")
-            cls.modules.append( {"name": module, "freq": module_freq} )
+            cls.modules.append( {"name" : module_name, "object": module, "freq": module_freq} )
 
     @classmethod
     def get_registered_modules(cls):
@@ -59,13 +57,13 @@ class ModuleManager():
     @classmethod
     def start_all(cls):
         for module in cls.modules:
-            module_name = module["name"]
+            module_object = module["object"]
             module_freq = module["freq"]
 
-            module_name.start(module_freq)
+            module_object.start(module_freq)
+            print(f"{module_object} started")
 
     @classmethod
     def stop(cls, *args):
         for module in args:
-            cls.modules[module].
-            exec(f"{module}.stop()")
+            for module
