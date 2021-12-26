@@ -65,5 +65,4 @@ class ModuleManager():
 
     @classmethod
     def stop(cls, *args):
-        for module in args:
-            for module
+        pass

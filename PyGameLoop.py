@@ -13,4 +13,8 @@ class PyGameLoop(Module):
             self.pygame_init = True
 
         pygame.event.pump()
-        pygame.display.flip()
+
+        try:
+            pygame.display.flip()
+        except ImportError:
+            print("GUI Module not imported")
