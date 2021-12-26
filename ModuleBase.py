@@ -57,11 +57,12 @@ class ModuleManager():
     @classmethod
     def start_all(cls):
         for module in cls.modules:
+            module_name = module["name"]
             module_object = module["object"]
             module_freq = module["freq"]
 
             module_object.start(module_freq)
-            print(f"{module_object} started")
+            print(f"{module_name} started")
 
     @classmethod
     def stop(cls, *args):
