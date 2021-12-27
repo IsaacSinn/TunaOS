@@ -35,11 +35,16 @@ class Module:
         self.__thread.stopThread()
 
 class ModuleManager():
+    _instance = None
 
-    modules = []
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(ModuleManager, cls).__new__(cls)
+            cls.modules = []
+        return cls._instance
 
     @classmethod
-    def register(cls, *args): # mm.register(("Module1", "Module1", freq), ("Module2", "Module2", freq))
+    def register(self, *args): # mm.register(("Module1", "Module1", freq), ("Module2", "Module2", freq))
         for module_info in args:
 
             module_file = module_info[0]
@@ -65,5 +70,15 @@ class ModuleManager():
             print(f"{module_name} started")
 
     @classmethod
-    def stop(cls, *args):
-        pass
+    def stop_all(cls):
+        for module in cls.modules:
+            module_name = module["name"]
+            module_object = module["object"]
+            module_freq = module["freq"]
+
+            module_object.stop()
+            print(f"{module_name} stopped")
+
+    def start(cls, *args):
+        for module in args:
+            print(cls.modules[1]["name"])

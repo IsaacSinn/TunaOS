@@ -47,7 +47,7 @@ class Joystick(Module):
             self.direct_input[i] = self.joystick.get_axis(i)
 
         LLR, LUD, RLR, RUD, BL, BR = self.direct_input
-        #print(self.direct_input)
+        print(self.direct_input)
         LLR = 1*deadzoneleft(LLR)
         LUD = -1*deadzoneleft(LUD)
         RLR = 1*deadzoneright(RLR)
@@ -63,6 +63,7 @@ class Joystick(Module):
             self.movement_message = [ LLR,  LUD, -RLR, BLR,  RUD, 0]    #(strafe, drive, yaw, updown, tilt, 0)
 
         pub.sendMessage("joystick.movement", message = {"joystick_movement": self.movement_message})
+
 
 
 if __name__ == '__main__':
