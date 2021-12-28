@@ -23,8 +23,6 @@ class Interval:
         self.thread.join()
         print("Thread Killed")
 
-
-
 class Module:
     def run(self):
         pass
@@ -35,3 +33,53 @@ class Module:
 
     def stop(self):
         self.__thread.stopThread()
+
+class ModuleManager():
+    # _instance = None
+    #
+    # def __new__(cls):
+    #     if cls._instance is None:
+    #         cls._instance = super(ModuleManager, cls).__new__(cls)
+    #         cls.modules = []
+    #     return cls._instance
+    modules = []
+
+    @classmethod
+    def register(cls, *args): # mm.register(("Module1", "Module1", freq), ("Module2", "Module2", freq))
+        for module_info in args:
+
+            module_file = module_info[0]
+            module_name = module_info[1]
+            module_freq = module_info[2]
+
+            exec(f"from {module_file} import {module_name}")
+            module = eval(f"{module_name}()")
+            cls.modules.append( {"name" : module_name, "object": module, "freq": module_freq} )
+
+    @classmethod
+    def get_registered_modules(cls):
+        return cls.modules
+
+    @classmethod
+    def start_all(cls):
+        for module in cls.modules:
+            module_name = module["name"]
+            module_object = module["object"]
+            module_freq = module["freq"]
+
+            module_object.start(module_freq)
+            print(f"{module_name} started")
+
+    @classmethod
+    def stop_all(cls):
+        for module in cls.modules:
+            module_name = module["name"]
+            module_object = module["object"]
+            module_freq = module["freq"]
+
+            module_object.stop()
+            print(f"{module_name} stopped")
+
+    def start(cls, *args):
+        for module in args:
+            print(cls.modules[1]["name"])

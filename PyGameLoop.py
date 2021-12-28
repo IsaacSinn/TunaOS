@@ -8,9 +8,6 @@ class PyGameLoop(Module):
         self.pygame_init = False
 
     def run(self):
-        if not self.pygame_init:
-            pygame.init()
-            self.pygame_init = True
-
+        pygame.init()
         pygame.event.pump()
         pygame.display.flip()
