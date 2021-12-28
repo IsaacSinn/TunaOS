@@ -28,3 +28,4 @@ class GUI(Module):
 
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(text, (0,0))
+        pygame.display.flip()

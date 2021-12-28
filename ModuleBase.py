@@ -35,16 +35,17 @@ class Module:
         self.__thread.stopThread()
 
 class ModuleManager():
-    _instance = None
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super(ModuleManager, cls).__new__(cls)
-            cls.modules = []
-        return cls._instance
+    # _instance = None
+    #
+    # def __new__(cls):
+    #     if cls._instance is None:
+    #         cls._instance = super(ModuleManager, cls).__new__(cls)
+    #         cls.modules = []
+    #     return cls._instance
+    modules = []
 
     @classmethod
-    def register(self, *args): # mm.register(("Module1", "Module1", freq), ("Module2", "Module2", freq))
+    def register(cls, *args): # mm.register(("Module1", "Module1", freq), ("Module2", "Module2", freq))
         for module_info in args:
 
             module_file = module_info[0]

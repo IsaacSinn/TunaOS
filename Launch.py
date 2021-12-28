@@ -6,9 +6,7 @@ import pygame
 class main_loop(Module):
     def run(self):
         pygame.init()
-        if pygame.display.get_init():
-            pygame.display.flip()
-            pygame.event.pump()
+        pygame.event.pump()
 
 
 main_loop = main_loop().start(60)
