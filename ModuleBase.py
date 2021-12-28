@@ -21,7 +21,6 @@ class Interval:
     def stopThread(self):
         self.__stopEvent = True
         self.thread.join()
-        print("Thread Killed")
 
 class Module:
     def run(self):

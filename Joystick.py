@@ -1,5 +1,5 @@
 from ModuleBase import Module
-import pygame
+from PyGameServices import PyGameServices
 from pubsub import pub
 
 # constants

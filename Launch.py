@@ -1,15 +1,8 @@
 import time
-from ModuleBase import ModuleManager, Module
+from ModuleBase import ModuleManager
 from threading import Thread
-import pygame
-
-class main_loop(Module):
-    def run(self):
-        pygame.init()
-        pygame.event.pump()
 
 
-main_loop = main_loop().start(60)
 
 mm = ModuleManager()
 mm.register(("GUI", "GUI", 60), ("Joystick", "Joystick", 60))

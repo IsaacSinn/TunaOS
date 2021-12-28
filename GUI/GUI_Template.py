@@ -58,6 +58,7 @@ class Joystick(Module):
 
 
         pub.sendMessage("joystick.movement", message = {"joystick_movement": self.movement_message})
+        pub.sendMessage("thruster.power", message = {"Thruster_message": [1,1,-1,-1,0,0]}) # [FL, FR, BL, BR, UF, UB]
 
 class PygameLoop(Module):
     def __init__(self):
