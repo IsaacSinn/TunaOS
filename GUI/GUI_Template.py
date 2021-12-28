@@ -76,10 +76,12 @@ class gui(Module):
     def __init__(self):
         super().__init__()
         pygame.display.set_caption("GUI")
-        self.screen = pygame.display.set_mode((1920, 1080))
+        self.screen = pygame.display.set_mode((1000, 400))
 
-        self.background = pygame.Surface((1920, 1080))
-        self.background.fill(pygame.Color('#00FF00'))
+        turquoise = '#9cc3cd'
+
+        self.background = pygame.Surface((1000, 400))
+        self.background.fill(pygame.Color(turquoise))
 
         self.is_running = True
 
@@ -96,8 +98,31 @@ class gui(Module):
         text = self.font.render(f"{self.movement}", False, (0,0,0))
 
         self.screen.blit(self.background, (0, 0))
-        self.screen.blit(text, (0,0))
+        # self.screen.blit(text, (0,0))
 
+        LLR, LUD, RLR, BLR, RUD, X = (self.movement)
+
+        #Base Colors
+        white = (255, 255, 255)
+        black = (0, 0, 0)
+        yellow = (255, 200, 0)
+        asian_skin = (255,224,196)
+        dark_skin = (226, 185, 143)
+        dark_red = (113,2,0)
+        turquoise = '#9cc3cd'
+
+        def dots_back():
+            pygame.draw.circle(self.screen,black,(500,200),120)
+            pygame.draw.circle(self.screen, black,(200,200),120)
+
+        def plottings(point_x,point_y,offset_x, offset_y):
+            coord_x = point_x * 80 + offset_x
+            coord_y = point_y * -80 + offset_y
+            pygame.draw.circle(self.screen,yellow,(coord_x, coord_y), 15)
+
+        dots_back()
+        plottings(LLR,LUD,200,200)
+        plottings(-RLR,RUD,500,200)
 
 if __name__ == '__main__':
     gui = gui()
