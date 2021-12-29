@@ -21,10 +21,10 @@ class GUI(Module):
         self.font = self.pygame.font.SysFont("Comic Sans MS", 30)
 
         # pub sub init
-        pub.subscribe(self.movement_handler, "joystick.movement")
+        pub.subscribe(self.movement_handler, "gamepad.movement")
 
     def movement_handler(self, message):
-        self.movement = message["joystick_movement"]
+        self.movement = message["gamepad_movement"]
 
     def run(self):
         text = self.font.render(f"{self.movement}", False, (0,0,0))

@@ -34,14 +34,12 @@ class Module:
         self.__thread.stopThread()
 
 class ModuleManager():
-    # _instance = None
-    #
-    # def __new__(cls):
-    #     if cls._instance is None:
-    #         cls._instance = super(ModuleManager, cls).__new__(cls)
-    #         cls.modules = []
-    #     return cls._instance
-    modules = []
+
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(ModuleManager, cls).__new__(cls)
+            cls.modules = []
+        return cls.instance
 
     @classmethod
     def register(cls, *args): # mm.register(("Module1", "Module1", freq), ("Module2", "Module2", freq))
@@ -79,6 +77,24 @@ class ModuleManager():
             module_object.stop()
             print(f"{module_name} stopped")
 
+    @classmethod
     def start(cls, *args):
-        for module in args:
-            print(cls.modules[1]["name"])
+        for module_info in args:
+            module_name = module_info[0]
+            module_freq = module_info[1]
+
+            for index in range(len(cls.modules)):
+                if cls.modules[index]["name"] == module_name:
+                    cls.modules[index]["object"].start(module_freq)
+                    print(f"{module_name} started")
+
+    @classmethod
+    def stop(cls, *args):
+        for module_info in args:
+            module_name = module_info[0]
+            module_freq = module_info[1]
+
+            for index in range(len(cls.modules)):
+                if cls.modules[index]["name"] == module_name:
+                    cls.modules[index]["object"].stop(module_freq)
+                    print(f"{module_name} stopped")
