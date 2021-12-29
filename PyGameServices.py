@@ -21,7 +21,7 @@ class PyGameServices(Module):
             pygame.font.init()
             cls.pygame_init = True
 
-        if not cls.screen: # run if screen initialized
+        if cls.screen: # run if screen initialized
             pygame.display.flip()
 
         pygame.event.pump()
@@ -37,9 +37,10 @@ class PyGameServices(Module):
         return cls.screen
 
     @classmethod
-    def get_joystick(cls, ID):
+    def get_joystick(cls, ID = 0):
         try:
             cls.joystick = pygame.joystick.Joystick(ID)
+            cls.joystick.init()
             return cls.joystick
         except:
-            raise TypeError("No Joystick Connected")
+            return None

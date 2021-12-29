@@ -29,12 +29,13 @@ class Joystick(Module):
     def __init__(self):
         super().__init__()
 
-        pygame.joystick.init()
-        try:
-            self.joystick = pygame.joystick.Joystick(0)
-        except:
-            raise TypeError("No joystick connected")
-        self.joystick.init()
+
+        # request from pygame services
+        pygs = PyGameServices()
+        self.joystick = pygs.get_joystick(0)
+
+        if self.joystick is None:
+            raise TypeError("Joystick not connected")
 
         # variables
         self.direct_input = [0 for i in range(6)]
