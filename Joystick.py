@@ -128,7 +128,7 @@ class Joystick(Module):
         """
         _new_tool = self.active_tools[tool_index]
         self.active_tool = _new_tool
-        pub.sendMessage("gamepad.selected_tool", message = {"gamepad_tool_index": tool_index})
+        pub.sendMessage("gamepad.selected_tool", message = {"gamepad_tool_index": tool_index}) # For GUI
         pub.sendMessage("gamepad.em_states", message = self.em_states)
         self.bumper_hold_on = self.bumper_hold[tool_index]
         self.bumper_hold_default_sent = False
@@ -178,6 +178,7 @@ class Joystick(Module):
         self.south_input = [self.south_input[0], hat_mapping(self.joystick.get_hat(0))[3]]
 
         # MAPPING IN WINDOWS
+        pub.sendMessage("gamepad.direct", message = {"gamepad_direct": self.direct_input}) # For GUI
         LLR, LUD, RLR, RUD, BL, BR = self.direct_input
         LLR = 1*deadzoneleft(LLR)
         LUD = -1*deadzoneleft(LUD)
@@ -208,7 +209,7 @@ class Joystick(Module):
 
         if button_pressed(self.x_input):
             self.control_invert = not self.control_invert
-            pub.sendMessage("gamepad.invert", message = {"gamepad_invert": self.control_invert}) #For GUI
+            pub.sendMessage("gamepad.invert", message = {"gamepad_invert": self.control_invert}) # For GUI
 
         if button_pressed(self.a_input):
             pass
@@ -234,3 +235,6 @@ if __name__ == '__main__':
 
     Joystick = Joystick()
     Joystick.start(60)
+
+    pygs = PyGameServices()
+    pygs.start(60)

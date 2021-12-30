@@ -6,20 +6,19 @@ class PyGameServices(Module):
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super(PyGameServices, cls).__new__(cls)
-            cls.pygame_init = False
             cls.screen = None
             cls.joystick = None
         return cls.instance
 
     @classmethod
+    def run_once_in_thread(cls):
+
+        pygame.init()
+        pygame.display.init()
+        pygame.font.init()
+
+    @classmethod
     def run(cls):
-
-        if not cls.pygame_init: # run once
-
-            pygame.init()
-            pygame.display.init()
-            pygame.font.init()
-            cls.pygame_init = True
 
         if cls.screen: # run if screen initialized
             pygame.display.flip()

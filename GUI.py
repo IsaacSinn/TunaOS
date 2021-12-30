@@ -20,9 +20,10 @@ class GUI(Module):
         self.background.fill(self.pygame.Color('#00FF00'))
         self.font = self.pygame.font.SysFont("Comic Sans MS", 30)
 
-        # pub sub init
+        # pubsub init
         pub.subscribe(self.movement_handler, "gamepad.movement")
 
+    # pubsub handler
     def movement_handler(self, message):
         self.movement = message["gamepad_movement"]
 
