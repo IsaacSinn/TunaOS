@@ -44,19 +44,13 @@ class ModuleManager():
         if not hasattr(cls, 'instance'):
             cls.instance = super(ModuleManager, cls).__new__(cls)
             cls.modules = []
+            cls.ID = 0
         return cls.instance
 
     @classmethod
-    def register(cls, *args): # mm.register(("Module1", "Module1", freq), ("Module2", "Module2", freq))
-        for module_info in args:
-
-            module_file = module_info[0]
-            module_name = module_info[1]
-            module_freq = module_info[2]
-
-            exec(f"from {module_file} import {module_name}")
-            module = eval(f"{module_name}()")
-            cls.modules.append( {"name" : module_name, "object": module, "freq": module_freq} )
+    def register(cls, *args):
+        for module in args:
+            cls.modules.append(module)
 
     @classmethod
     def get_registered_modules(cls):
