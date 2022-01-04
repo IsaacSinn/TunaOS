@@ -178,7 +178,7 @@ class Joystick(Module):
         self.south_input = [self.south_input[0], hat_mapping(self.joystick.get_hat(0))[3]]
 
         # MAPPING IN WINDOWS
-        pub.sendMessage("gamepad.direct", message = {"gamepad_direct": self.direct_input}) # For GUI
+        pub.sendMessage("gamepad.direct", message = {"gamepad_direct": self.direct_input}) # For GUI Tuple (LLR, LUD, RLR, RUD, BL, BR)
         LLR, LUD, RLR, RUD, BL, BR = self.direct_input
         LLR = 1*deadzoneleft(LLR)
         LUD = -1*deadzoneleft(LUD)
