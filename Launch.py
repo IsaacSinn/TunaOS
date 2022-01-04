@@ -13,5 +13,5 @@ pygs.start(60)
 GUI = GUI()
 Joystick = Joystick()
 
-mm.register(("GUI", "GUI", 60), ("Joystick", "Joystick", 60))
+mm.register((GUI, 60), (Joystick, 60))
 mm.start_all()

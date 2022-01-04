@@ -26,7 +26,7 @@ class GUI(Module):
 
     # pubsub handler
     def direct_handler(self, message):
-        self.joystick_raw = message["gamepad_direct"]
+        self.movement = message["gamepad_direct"]
 
     def run(self):
         text = self.font.render(f"{self.movement}", False, (0,0,0))

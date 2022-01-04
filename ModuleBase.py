@@ -44,56 +44,64 @@ class ModuleManager():
         if not hasattr(cls, 'instance'):
             cls.instance = super(ModuleManager, cls).__new__(cls)
             cls.modules = []
+            cls.modules_name = []
+            cls.modules_freq = []
             cls.ID = 0
         return cls.instance
 
     @classmethod
     def register(cls, *args):
-        for module in args:
-            cls.modules.append(module)
+        for module_info in args:
+            cls.modules_freq.append(module_info[1])
+            cls.modules_name.append(type(module_info[0]).__name__)
+            cls.modules.append(module_info[0])
 
     @classmethod
     def get_registered_modules(cls):
-        return cls.modules
+        return cls.modules_name
 
     @classmethod
     def start_all(cls):
-        for module in cls.modules:
-            module_name = module["name"]
-            module_object = module["object"]
-            module_freq = module["freq"]
+        for index, module in enumerate(cls.modules):
+            module_freq = cls.modules_freq[index]
+            module_name = cls.modules_name[index]
 
-            module_object.start(module_freq)
+            module.start(module_freq)
             print(f"{module_name} started")
+
 
     @classmethod
     def stop_all(cls):
-        for module in cls.modules:
-            module_name = module["name"]
-            module_object = module["object"]
-            module_freq = module["freq"]
+        for index, module in enumerate(cls.modules):
+            module_name = cls.modules_name[index]
 
-            module_object.stop()
+            module.stop()
             print(f"{module_name} stopped")
 
     @classmethod
     def start(cls, *args):
-        for module_info in args:
-            module_name = module_info[0]
-            module_freq = module_info[1]
+        for module_to_start in args:
 
-            for index in range(len(cls.modules)):
-                if cls.modules[index]["name"] == module_name:
-                    cls.modules[index]["object"].start(module_freq)
+            for index, module_name in enumerate(cls.modules_name):
+                if module_name.casefold() == module_to_start.casefold():
+                    module = cls.modules[index]
+                    module_freq = cls.modules_freq[index]
+
+                    module.start(module_freq)
                     print(f"{module_name} started")
+
+                    break
+
 
     @classmethod
     def stop(cls, *args):
-        for module_info in args:
-            module_name = module_info[0]
-            module_freq = module_info[1]
+        for module_to_stop in args:
 
-            for index in range(len(cls.modules)):
-                if cls.modules[index]["name"] == module_name:
-                    cls.modules[index]["object"].stop(module_freq)
+            for index, module_name in enumerate(cls.modules_name):
+                if module_name.casefold() == module_to_stop.casefold():
+                    module = cls.modules[index]
+
+                    module.stop()
                     print(f"{module_name} stopped")
+
+                    break
