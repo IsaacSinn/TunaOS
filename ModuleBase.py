@@ -82,26 +82,33 @@ class ModuleManager():
     def start(cls, *args):
         for module_to_start in args:
 
+            found = False
             for index, module_name in enumerate(cls.modules_name):
                 if module_name.casefold() == module_to_start.casefold():
                     module = cls.modules[index]
                     module_freq = cls.modules_freq[index]
 
+                    found = True
                     module.start(module_freq)
                     print(f"{module_name} started")
-
                     break
 
+            if not found:
+                raise TypeError(f"{module_name} not found")
 
     @classmethod
     def stop(cls, *args):
         for module_to_stop in args:
 
+            found = False
             for index, module_name in enumerate(cls.modules_name):
                 if module_name.casefold() == module_to_stop.casefold():
                     module = cls.modules[index]
 
+                    found = True
                     module.stop()
                     print(f"{module_name} stopped")
-
                     break
+
+            if not found:
+                raise TypeError(f"{module_name} not found")

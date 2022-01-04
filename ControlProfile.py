@@ -35,9 +35,10 @@ class ControlProfile(Module):
             TiltFB *= self.max_percentage
             TiltLR *= self.max_percentage
 
-            pub.sendMessage("command.movement", message = {"command_movement": (Strafe, Drive, Yaw, Updown, TiltFB, TiltLR)})
+            pub.sendMessage("control.movement", message = {"control_movement": (Strafe, Drive, Yaw, Updown, TiltFB, TiltLR)})
 
     def profile_listener(self, message):
         self.profile_change = message["gamepad_profile"]
 
 if __name__ == "__main__":
+    pass
