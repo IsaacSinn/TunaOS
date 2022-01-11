@@ -115,7 +115,6 @@ class ThrusterPower(Module):
         finalList = finalList.tolist()
         finalList = [item for item in finalList if isinstance(item,list)]
         pub.sendMessage("thruster.power", message = {"thruster_power": finalList})
-        print(finalList)
 
     def run(self):
         pass

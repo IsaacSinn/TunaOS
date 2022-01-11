@@ -32,8 +32,8 @@ class Module:
         pass
 
     def start(self, freq = 1):
-        self.__interval = 1 / freq
-        self.__thread = Interval(self.__interval, self.run, self.run_once_in_thread)
+        self.interval = 1 / freq
+        self.__thread = Interval(self.interval, self.run, self.run_once_in_thread)
 
     def stop(self):
         self.__thread.stopThread()
