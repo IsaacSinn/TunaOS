@@ -22,5 +22,7 @@ ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
 
-mm.register((Joystick, 120), (ControlProfileA, 60), (ControlProfileB, 60), (ControlProfileC, 60), (ControlProfileD, 60), (ThrusterPower, 60), (Thrusters, 60))
+#mm.register((Joystick, 120), (ControlProfileA, 60), (ControlProfileB, 60), (ControlProfileC, 60), (ControlProfileD, 60), (ThrusterPower, 60), (Thrusters, 60))
+mm.register((Joystick, 120), (GUI, 60))
+
 mm.start_all()
