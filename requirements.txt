@@ -3,3 +3,6 @@ pypubsub
 pyyaml
 numpy
 argparse
+python-can
+pyserial
+at_serial_can
