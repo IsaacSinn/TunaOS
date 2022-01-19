@@ -74,7 +74,7 @@ class Thrusters(Module):
                     self.output_power[counter] = int(self.output_power[counter]*32768)
                 pub.sendMessage("can.send", message = {"address": self.Thrusters[counter]["Address"], "data": [32, self.output_power[counter] >> 8 & 0xff, self.output_power[counter] & 0xff]})
                 pub.sendMessage("thrusters.info", message = {"thrusters_output": self.output_power})
-            print(self.output_power)
+            #print(self.output_power)
 
 
 class __Test_Case_Send__(Module):

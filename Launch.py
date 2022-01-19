@@ -8,6 +8,7 @@ from Joystick import Joystick
 from ControlProfile import ControlProfile
 from ThrusterPower import ThrusterPower
 from Thrusters import Thrusters
+from CANHandler import CANHandler
 
 mm = ModuleManager()
 pygs = PyGameServices()
@@ -21,8 +22,19 @@ ControlProfileC = ControlProfile(50, 50, "C")
 ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
+CANHandler = CANHandler()
 
-mm.register((Joystick, 120), (ControlProfileA, 60), (ControlProfileB, 60), (ControlProfileC, 60), (ControlProfileD, 60), (ThrusterPower, 60), (Thrusters, 60))
+# registering modules
+mm.register(
+            (Joystick, 120),
+            (ControlProfileA, 60),
+            (ControlProfileB, 60),
+            (ControlProfileC, 60),
+            (ControlProfileD, 60),
+            (ThrusterPower, 60),
+            (Thrusters, 60),
+            (CANHandler, 60)
+)
 #mm.register((Joystick, 120), (GUI, 60))
 
 mm.start_all()
