@@ -11,6 +11,7 @@ from Thrusters import Thrusters
 from CANHandler import CANHandler
 from EM import EM
 from Gripper import Gripper
+from Logger import Logger
 
 mm = ModuleManager()
 pygs = PyGameServices()
@@ -25,6 +26,9 @@ ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
 #CANHandler = CANHandler()
+Logger = Logger(False, True, "log")
+
+# TOOLS
 EM1 = EM("EM1", "0x30")
 EM2 = EM("EM2", "0x32")
 Gripper = Gripper("gripper", "0x22", "10000") # speed 0 - 32767
