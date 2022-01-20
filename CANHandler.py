@@ -45,7 +45,7 @@ class CANHandler(Module):
 
         if msg is not None:
             topic = f"can.receive.{hex(msg.arbitration_id)}"
-            print(msg)
+            #print(msg)
             pub.sendMessage(topic, message = {"can.receive": msg})
 
 
