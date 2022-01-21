@@ -35,6 +35,7 @@ Gripper = Gripper("gripper", "0x22", "10000") # speed 0 - 32767
 
 # Registering Modules
 mm.register(
+            (GUI, 60),
             (Joystick, 120),
             (ControlProfileA, 60),
             (ControlProfileB, 60),
