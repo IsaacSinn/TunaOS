@@ -26,7 +26,7 @@ ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
 #CANHandler = CANHandler()
-Logger = Logger(False, True, "log")
+Logger = Logger(False, True, "gamepad.direct")
 
 # TOOLS
 EM1 = EM("EM1", "0x30")
@@ -35,7 +35,7 @@ Gripper = Gripper("gripper", "0x22", "10000") # speed 0 - 32767
 
 # Registering Modules
 mm.register(
-            (GUI, 60),
+#            (GUI, 60),
             (Joystick, 120),
             (ControlProfileA, 60),
             (ControlProfileB, 60),
@@ -49,7 +49,5 @@ mm.register(
             (Gripper, 1)
 )
 
-# FOR TESTING GUI (HOU FONG)
-# mm.register((Joystick, 120), (GUI, 60))
 
 mm.start_all()
