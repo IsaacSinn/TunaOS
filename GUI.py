@@ -50,7 +50,7 @@ class GUI(Module):
         self.movement = message["gamepad_direct"]
 
     def gripper_handler(self, message):
-        self.gripper = message["Tool_state"]
+        self.gripper = message["tool_state"]
 
 
     def run(self):
@@ -114,19 +114,22 @@ class GUI(Module):
         print(self.gripper)
 
         #gripper image assets
-        gripper_half = self.pygame.image.load(r'C:\Users\tonyc\OneDrive\Desktop\Documents\GitHub\TunaOS\GUI Assets\Gripper  Half Open.png')
+        gripper_half = self.pygame.image.load(r'.\GUI Assets\Gripper  Half Open.png')
         gripper_half = self.pygame.transform.scale(gripper_half,(400,400))
-        gripper_closed = self.pygame.image.load(r'C:\Users\tonyc\OneDrive\Desktop\Documents\GitHub\TunaOS\GUI Assets\Gripper Closed.png')
+        gripper_closed = self.pygame.image.load(r'.\GUI Assets\Gripper Closed.png')
         gripper_closed = self.pygame.transform.scale(gripper_closed,(400,4000))
-        gripper_full_opened =self.pygame.image.load(r"C:\Users\tonyc\OneDrive\Desktop\Documents\GitHub\TunaOS\GUI Assets\Gripper fully opened.png")
+        gripper_full_opened =self.pygame.image.load(r".\GUI Assets\Gripper fully opened.png")
         gripper_full_opened = self.pygame.transform.scale(gripper_full_opened,(400,400))
 
-        if self.gripper == -1:
-            self.screen.blit(gripper_closed,(0,500))
-        elif self.gripper == 0:
-            self.screen.blit(gripper_half, (0, 500))
-        elif self.gripper == 1:
-            self.screen.blit(gripper_full_opened, (0, 500))
+        # if self.gripper == -1:
+        #     self.screen.blit(gripper_closed,(0,500))
+        # elif self.gripper == 0:
+        #     self.screen.blit(gripper_half, (0, 500))
+        # elif self.gripper == 1:
+        #     self.screen.blit(gripper_full_opened, (0, 500))
+
+        self.screen.blit(gripper_full_opened, (0,500))
+
 
 
 
