@@ -2,7 +2,7 @@ import time
 from ModuleBase import ModuleManager
 from PyGameServices import PyGameServices
 
-# Modules
+# MODULES
 from GUI import GUI
 from Joystick import Joystick
 from ControlProfile import ControlProfile
@@ -26,14 +26,14 @@ ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
 #CANHandler = CANHandler()
-Logger = Logger(False, True, "gamepad.direct")
+# Logger = Logger(False, True, "gamepad.direct") # FILE, PRINT, TOPICS
 
 # TOOLS
 EM1 = EM("EM1", "0x30")
 EM2 = EM("EM2", "0x32")
-Gripper = Gripper("gripper", "0x22", "10000") # speed 0 - 32767
+Gripper = Gripper("gripper", "0x22", "10000") # SPEED 0 - 32767
 
-# Registering Modules
+# REGISTERING MODULES (INSTANCE, REFRESH PER SECOND)
 mm.register(
 #            (GUI, 60),
             (Joystick, 120),
