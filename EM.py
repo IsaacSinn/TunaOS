@@ -17,7 +17,6 @@ class EM(Module):
         pass
 
     def Listener(self, message):
-        #print(self.device, message)
         pub.sendMessage("can.send", message = {"address": eval(self.address), "data": EMLRcommand["EM_L"][1 if message["L"] else 0]})
         pub.sendMessage("can.send", message = {"address": eval(self.address), "data": EMLRcommand["EM_R"][1 if message["R"] else 0]})
 

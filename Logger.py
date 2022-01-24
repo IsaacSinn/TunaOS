@@ -3,21 +3,18 @@ from ModuleBase import Module
 from pubsub import pub
 import datetime
 from ratelimitingfilter import RateLimitingFilter
-from ModuleBase import ModuleManager
 
 class Logger(Module):
 
-    def __init__(self, log_file, log_print, rate, *args):
-
-        mm = ModuleManager()
+    def __init__(self, log_file, log_print, rate_limiter = None, *args):
 
         logFormatter = logging.Formatter("%(asctime)s [%(levelname)-5.5s] %(message)s")
         self.rootLogger = logging.getLogger()
         self.rootLogger.setLevel(logging.DEBUG)
 
         # RATE LIMITER FILTER - LOGGING
-        self.rate = rate
-        rate_limit = RateLimitingFilter(rate = self.rate, per=1)
+        if rate_limiter is not None:
+            self.rate = rate_limiter
 
         if log_file:
             log_date = datetime.datetime.now()
@@ -32,9 +29,17 @@ class Logger(Module):
             self.rootLogger.addHandler(consoleHandler)
 
         for topic in args:
+            if rate_limiter:
 
-            topic_logger = topic.replace(".", "_")
-            exec(f"{topic_logger} = TopicLogger('{topic}', {self.rate})")
+                topic_logger = topic.replace(".", "_")
+                exec(f"{topic_logger} = TopicLogger('{topic}', {self.rate})")
+
+            else:
+                pub.subscribe(self.listener, topic)
+
+    def listener(self, message):
+        self.rootLogger.debug(f"{message}")
+
 
 class TopicLogger(Module):
 

@@ -26,7 +26,7 @@ ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
 # CANHandler = CANHandler()
-# Logger = Logger(False, True, 10, "gamepad.direct") # FILE, PRINT, TOPICS
+# Logger = Logger(False, True, None, "gamepad.gripper", "gamepad.EM1", "gamepad.EM2") # FILE, PRINT, RATE_LIMITER, TOPICS
 
 # TOOLS
 EM1 = EM("EM1", "0x30")
