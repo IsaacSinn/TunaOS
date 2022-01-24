@@ -36,7 +36,7 @@ class CANHandler(Module):
         try:
             self.bus.send(msg)
             pub.sendMessage("log.sent" , message = msg)
-            #print(f"msg: {msg}")
+
         except can.CanError:
             print("Message not sent")
 
@@ -45,7 +45,6 @@ class CANHandler(Module):
 
         if msg is not None:
             topic = f"can.receive.{hex(msg.arbitration_id)}"
-            #print(msg)
             pub.sendMessage(topic, message = {"can.receive": msg})
 
 
