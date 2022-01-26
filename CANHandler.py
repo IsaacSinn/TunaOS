@@ -27,7 +27,14 @@ from pubsub import pub
 class CANHandler(Module):
     def __init__(self):
         super().__init__()
-        self.bus = at_serial_can.ATSerialBus(channel="COM3", bitrate=250000)
+
+        for i in range(10):
+            try:
+                self.bus = at_serial_can.ATSerialBus(channel=f"COM{i}", bitrate=250000)
+                print(f"Connected COM{i}")
+            except:
+                pass
+
         pub.subscribe(self.message_listener, "can.send")
 
     def message_listener(self, message):
