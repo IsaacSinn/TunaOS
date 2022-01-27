@@ -108,7 +108,7 @@ class ThrusterPower(Module):
         expectedResult = np.array((Strafe, Drive, Updown, TiltFB, TiltLR, Yaw)).reshape(6,1)
         finalList = self.pseudoInv(expectedResult)
         finalList = self.directionScale(finalList)
-        finalList = self.invert(finalList)
+        #finalList = self.invert(finalList)
         finalList = self.truncate(finalList)
 
         finalList = finalList.reshape(1,6)

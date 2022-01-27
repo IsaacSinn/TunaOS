@@ -13,7 +13,6 @@ class Gripper(Module):
         pass
 
     def Listener(self, message):
-        #print(message)
         if message["tool_state"] == 1:
             pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [32, self.speed >> 8 & 0xff, self.speed & 0xff]})
         elif message["tool_state"] == -1:
