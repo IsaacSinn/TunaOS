@@ -25,13 +25,13 @@ ControlProfileC = ControlProfile(50, 50, "C")
 ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
-# CANHandler = CANHandler()
-# Logger = Logger(False, True, None, "log.sent") # FILE, PRINT, RATE_LIMITER, TOPICS
+#CANHandler = CANHandler()
+Logger = Logger(False, True, None, "gamepad.gripper") # FILE, PRINT, RATE_LIMITER, TOPICS
 
 # TOOLS
 EM1 = EM("EM1", "0x30")
 EM2 = EM("EM2", "0x32")
-Gripper = Gripper("gripper", "0x22", "10000") # SPEED 0 - 32767
+Gripper = Gripper("gripper", "0x21", "10000") # SPEED 0 - 32767
 
 # REGISTERING MODULES (INSTANCE, REFRESH PER SECOND)
 mm.register(
@@ -48,6 +48,5 @@ mm.register(
             (EM2, 1),
             (Gripper, 1)
 )
-
 
 mm.start_all()
