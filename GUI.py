@@ -8,7 +8,7 @@ class GUI(Module):
 
         # variables
         self.movement = [0 for i in range(6)]
-        self.mode = (1000, 820)
+        self.mode = (1920,1080)
         self.gripper = 1
 
         # request from PyGameServices
@@ -31,6 +31,13 @@ class GUI(Module):
         self.em_2l_colour = self.black
         self.em_2r_colour = self.black
 
+
+        #em backing colour
+        self.em_1_colour = self.blue
+        self.em_2_colour = self.yellow
+
+        self.updown_colour = self.yellow
+
         self.em2r = False
         self.em2l = False
         self.em1r = False
@@ -38,11 +45,11 @@ class GUI(Module):
 
         #gripper image assets
         gripper_half = self.pygame.image.load(r'.\GUI Assets\Gripper  Half Open.png')
-        self.gripper_half = self.pygame.transform.scale(gripper_half,(500,400))
+        self.gripper_half = self.pygame.transform.scale(gripper_half,(889,500))
         gripper_closed = self.pygame.image.load(r'.\GUI Assets\Gripper Closed.png')
-        self.gripper_closed = self.pygame.transform.scale(gripper_closed,(500,400))
+        self.gripper_closed = self.pygame.transform.scale(gripper_closed,(889,500))
         gripper_full_opened =self.pygame.image.load(r".\GUI Assets\Gripper fully opened.png")
-        self.gripper_full_opened = self.pygame.transform.scale(gripper_full_opened,(500,400))
+        self.gripper_full_opened = self.pygame.transform.scale(gripper_full_opened,(889,500))
 
         self.background = self.pygame.Surface(self.mode)
         self.background.fill(self.pygame.Color(self.turquoise))
@@ -60,15 +67,15 @@ class GUI(Module):
 
     def em_back(self):
         # large rectangles
-        self.rect(self.yellow, (100, 350, 200, 100))
-        self.rect(self.blue, (400, 350, 200, 100))
+        self.rect(self.em_2_colour, (100, 350, 200, 100))
+        self.rect(self.em_1_colour, (400, 350, 200, 100))
 
         # top decorations
-        self.rect(self.yellow, (120, 340, 50, 10))
-        self.rect(self.yellow, (230, 340, 50, 10))
+        self.rect(self.em_2_colour, (120, 340, 50, 10))
+        self.rect(self.em_2_colour , (230, 340, 50, 10))
 
-        self.rect(self.blue, (420, 340, 50, 10))
-        self.rect(self.blue, (530, 340, 50, 10))
+        self.rect(self.em_1_colour, (420, 340, 50, 10))
+        self.rect(self.em_1_colour, (530, 340, 50, 10))
 
         self.triangle(self.em_1r_colour, [(230, 370), (230, 430), (270, 400)])
         self.triangle(self.em_2r_colour, [(530, 370), (530, 430), (570, 400)])
@@ -86,10 +93,53 @@ class GUI(Module):
         coord_y = point_y * -80 + offset_y
         self.dcircle((0, 200, 0), (coord_x, coord_y), 20)
 
+    def updown(self, BLT, BRT):
+        self.rect(self.yellow, (700, (450 + (-170 * (BLT + 1))), 50, ((BLT + 1) * 170)))
+        self.rect(self.yellow, (800, (450 + (-170 * (BRT + 1))), 50, ((BRT + 1) * 170)))
+
     def dots_back(self):
         for i in range(4):
             self.dcircle((i * 50, i * 50, i * 50), (500, 200), 120 - i * 30)
             self.dcircle((i * 50, i * 50, i * 50), (200, 200), 120 - i * 30)
+
+
+    def gripper_display(self):
+        if self.gripper == -1:
+             self.screen.blit(self.gripper_full_opened,(-100,450))
+        elif self.gripper == 0:
+            self.screen.blit(self.gripper_half, (-100, 450))
+        elif self.gripper == 1:
+             self.screen.blit(self.gripper_closed, (-100, 450))
+
+    def em_activation(self):
+        if self.em1r == True:
+            self.em_1r_colour = self.turquoise
+        if self.em2r == True:
+            self.em_2r_colour = self.turquoise
+        if self.em1l == True:
+            self.em_1l_colour = self.turquoise
+        if self.em2l == True:
+            self.em_2l_colour = self.turquoise
+        if self.em2r == False:
+            self.em_2r_colour = self.black
+        if self.em2l == False:
+            self.em_2l_colour = self.black
+        if self.em1l == False:
+            self.em_1l_colour = self.black
+        if self.em1r == False:
+            self.em_1r_colour = self.black
+
+    def updown_markers(self):
+        self.rect(self.white, (700, 365, 50, 85))
+        self.rect(self.black, (700, 280, 50, 85))
+        self.rect(self.white, (700, 195, 50, 85))
+        self.rect(self.black, (700, 110, 50, 85))
+
+        self.rect(self.white, (800, 365, 50, 85))
+        self.rect(self.black, (800, 280, 50, 85))
+        self.rect(self.white, (800, 195, 50, 85))
+        self.rect(self.black, (800, 110, 50, 85))
+
 
     # pubsub handler
     def direct_handler(self, message):
@@ -113,40 +163,15 @@ class GUI(Module):
         LLR, LUD, RLR, RUD,BL,BR = (self.movement)
 
         self.dots_back()
+
         self.plottings(LLR,-LUD,200,200)
         self.plottings(RLR,-RUD,500,200)
 
+        self.updown_markers()
+        self.updown(BL,BR)
+        self.gripper_display()
         self.em_back()
-
-        if self.gripper == -1:
-             self.screen.blit(self.gripper_full_opened,(-50,450))
-        elif self.gripper == 0:
-            self.screen.blit(self.gripper_half, (-50, 450))
-        elif self.gripper == 1:
-             self.screen.blit(self.gripper_closed, (-50, 450))
-
-
-        if self.em1r == True:
-            self.em_1r_colour = self.turquoise
-        if self.em2r == True:
-            self.em_2r_colour = self.turquoise
-        if self.em1l == True:
-            self.em_1l_colour = self.turquoise
-        if self.em2l == True:
-            self.em_2l_colour = self.turquoise
-        if self.em2r == False:
-            self.em_2r_colour = self.black
-        if self.em2l == False:
-            self.em_2l_colour = self.black
-        if self.em1l == False:
-            self.em_1l_colour = self.black
-        if self.em1r == False:
-            self.em_1r_colour = self.black
-
+        self.em_activation()
 
         #TODO Abstract Colours from the displayed items
-        #Seperate the initialization
-        #should be function(self)
-        #self.function
-        #Change to 1080p
-        # KEEP RATIO OF GRIPPER IMAGES
+        # ADD UP DOWN OF JOYSTICK
