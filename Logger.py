@@ -2,7 +2,7 @@ import logging
 from ModuleBase import Module
 from pubsub import pub
 import datetime
-from ratelimitingfilter import RateLimitingFilter
+# from ratelimitingfilter import RateLimitingFilter
 
 class Logger(Module):
 
