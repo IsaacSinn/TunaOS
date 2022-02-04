@@ -43,6 +43,10 @@ class GUI(Module):
         self.em1r = False
         self.em1l = False
 
+        self.profile = "A"
+        self.invert = False
+
+
         #gripper image assets
         gripper_half = self.pygame.image.load(r'.\GUI Assets\Gripper  Half Open.png')
         self.gripper_half = self.pygame.transform.scale(gripper_half,(889,500))
@@ -50,16 +54,21 @@ class GUI(Module):
         self.gripper_closed = self.pygame.transform.scale(gripper_closed,(889,500))
         gripper_full_opened =self.pygame.image.load(r".\GUI Assets\Gripper fully opened.png")
         self.gripper_full_opened = self.pygame.transform.scale(gripper_full_opened,(889,500))
+        rov_upview = self.pygame.image.load(r".\GUI Assets\otodus_bottom_view.png")
+        self.rov_upview = self.pygame.transform.scale(rov_upview,(400,400))
 
         self.background = self.pygame.Surface(self.mode)
         self.background.fill(self.pygame.Color(self.turquoise))
-        self.font = self.pygame.font.SysFont("Comic Sans MS", 30)
+        self.comic_font_large = self.pygame.font.SysFont("Comic Sans MS", 160)
+        self.comic_font_small = self.pygame.font.SysFont("Comic Sans MS", 40)
         self.active_tools = ("gamepad.gripper", "gamepad.EM1", "gamepad.EM2", "gamepad.erector")
 
         # pubsub init
         pub.subscribe(self.direct_handler, "gamepad.direct")
         pub.subscribe(self.gripper_handler,"gamepad.gripper")
         pub.subscribe(self.em_handler,"gamepad.em_states")
+        pub.subscribe(self.profile_handler,"gamepad.profile")
+        pub.subscribe(self.invert_handler,"gamepad.invert")
 
     def rect(self,colour, dimensions):
         self.pygame.draw.rect(self.screen, colour, self.pygame.Rect(dimensions))
@@ -140,6 +149,19 @@ class GUI(Module):
         self.rect(self.white, (800, 195, 50, 85))
         self.rect(self.black, (800, 110, 50, 85))
 
+    def rov_image(self):
+        self.screen.blit(self.rov_upview, (1200, 50))
+
+    def profile_label(self):
+        self.rect(self.white, (1200, 540, 170, 170))
+        self.profile_info = self.comic_font_large.render(str(self.profile), False, (0,0,0))
+        self.screen.blit(self.profile_info,(1230,500))
+
+    def inversion(self):
+        self.inverting = self.comic_font_large.render(str(self.invert), False, (0,0,0))
+        self.screen.blit(self.inverting,(1430,500))
+
+
 
     # pubsub handler
     def direct_handler(self, message):
@@ -154,16 +176,22 @@ class GUI(Module):
         self.em2l = message["gamepad.EM2L"]
         self.em2r = message["gamepad.EM2R"]
 
+    def profile_handler(self, message):
+        self.profile = message["gamepad_profile"]
+
+    def invert_handler(self, message):
+        self.invert = message["gamepad_invert"]
+    #x button to invert
+
     # MAIN LOOP
     def run(self):
-        text = self.font.render(f"", False, (0,0,0))
-        self.screen.blit(self.background, (0, 0))
-        self.screen.blit(text, (0,0))
 
+        self.screen.blit(self.background, (0, 0))
         LLR, LUD, RLR, RUD,BL,BR = (self.movement)
 
+        self.profile_label()
         self.dots_back()
-
+        self.inversion()
         self.plottings(LLR,-LUD,200,200)
         self.plottings(RLR,-RUD,500,200)
 
@@ -172,6 +200,8 @@ class GUI(Module):
         self.gripper_display()
         self.em_back()
         self.em_activation()
+        self.rov_image()
+        print(self.invert)
 
-        #TODO Abstract Colours from the displayed items
-        # ADD UP DOWN OF JOYSTICK
+
+#TODO Abstract Colours from the displayed items
