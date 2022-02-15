@@ -16,12 +16,12 @@ class PyGameServices(Module):
         pygame.init()
         pygame.display.init()
         pygame.font.init()
+       
 
     @classmethod
     def run(cls):
-
-        if cls.screen: # run if screen initialized
-            pygame.display.flip()
+        # if cls.screen: # run if screen initialized
+        #     pygame.display.flip()
 
         pygame.event.pump()
 
@@ -37,9 +37,9 @@ class PyGameServices(Module):
 
     @classmethod
     def get_joystick(cls, ID = 0):
-        try:
+        if cls.joystick is None:
             cls.joystick = pygame.joystick.Joystick(ID)
             cls.joystick.init()
-            return cls.joystick
-        except:
-            return None
+
+        return cls.joystick
+

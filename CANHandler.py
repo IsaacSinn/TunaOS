@@ -27,13 +27,20 @@ from pubsub import pub
 class CANHandler(Module):
     def __init__(self):
         super().__init__()
+        
+        connected = False
 
-        for i in range(10):
+        for i in range(12):
             try:
-                self.bus = at_serial_can.ATSerialBus(channel=f"COM{i}", bitrate=250000)
+                self.bus = at_serial_can.ATSerialBus(channel=f"COM{i}", ttyBaudrate=115200, bitrate=250000)
                 print(f"Connected COM{i}")
+                connected = True
+                break
             except:
                 pass
+        
+        if not connected:
+            raise Exception("NOT Connected to any CAN BUs sender, goodbye, check cable")
 
         pub.subscribe(self.message_listener, "can.send")
 
@@ -44,8 +51,9 @@ class CANHandler(Module):
             self.bus.send(msg)
             pub.sendMessage("log.sent" , message = msg)
 
-        except can.CanError:
-            print("Message not sent")
+        #TODO: Handle different types of errors
+        except Exception as e:
+            print("Message not sent", e)
 
     def run(self):
         msg = self.bus.recv(0)

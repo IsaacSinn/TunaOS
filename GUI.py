@@ -149,8 +149,8 @@ class GUI(Module):
         self.rect(self.white, (800, 195, 50, 85))
         self.rect(self.black, (800, 110, 50, 85))
 
-    def rov_image(self):
-        self.screen.blit(self.rov_upview, (1200, 50))
+    # def rov_image(self):
+    #     self.screen.blit(self.rov_upview, (1200, 50))
 
     def profile_label(self):
         self.rect(self.white, (1200, 540, 170, 170))
@@ -200,8 +200,7 @@ class GUI(Module):
         self.gripper_display()
         self.em_back()
         self.em_activation()
-        self.rov_image()
-        print(self.invert)
-
-
-#TODO Abstract Colours from the displayed items
+        # self.rov_image()
+        # print(self.invert)
+        
+        self.pygame.display.flip()

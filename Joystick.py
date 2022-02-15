@@ -156,7 +156,7 @@ class Joystick(Module):
 
 
     def run(self):
-
+        
         # GET JOYSTICK
         for i in range(self.joystick.get_numaxes()):
             self.direct_input[i] = self.joystick.get_axis(i)
@@ -228,6 +228,8 @@ class Joystick(Module):
 
         if self.active_tool:
             self.tool_action()
+            
+        
 
 
 

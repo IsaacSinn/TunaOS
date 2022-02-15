@@ -15,7 +15,9 @@ from Logger import Logger
 
 mm = ModuleManager()
 pygs = PyGameServices()
-pygs.start(120)
+pygs.start(100)
+
+GUI_FPS = 100
 
 GUI = GUI()
 Joystick = Joystick()
@@ -31,22 +33,26 @@ Logger = Logger(False, True, None, "gamepad.gripper") # FILE, PRINT, RATE_LIMITE
 # TOOLS
 EM1 = EM("EM1", "0x30")
 EM2 = EM("EM2", "0x32")
-Gripper = Gripper("gripper", "0x21", "10000") # SPEED 0 - 32767
+Gripper = Gripper("gripper", "0x22", "10000") # SPEED 0 - 32767
 
 # REGISTERING MODULES (INSTANCE, REFRESH PER SECOND)
 mm.register(
-            (GUI, 60),
-            (Joystick, 120),
+            (GUI, GUI_FPS),
+            (Joystick, 60),
             (ControlProfileA, 60),
             (ControlProfileB, 60),
             (ControlProfileC, 60),
             (ControlProfileD, 60),
             (ThrusterPower, 60),
             (Thrusters, 60),
-#            (CANHandler, 60),
+            #(CANHandler, 60),
             (EM1, 1),
             (EM2, 1),
             (Gripper, 1)
 )
 
 mm.start_all()
+
+while True:
+    pygs.get_pygame().event.get()
+    pygs.get_pygame().time.delay(int((1/GUI_FPS) * 1000))
