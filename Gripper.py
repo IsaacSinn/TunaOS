@@ -8,17 +8,18 @@ class Gripper(Module):
         self.speed = int(speed)
         self.address = address
         exec(f'pub.subscribe(self.Listener, "gamepad.{self.device}")')
+        self.tool_state = 0
 
     def run(self):
-        pass
-
-    def Listener(self, message):
-        if message["tool_state"] == 1:
+        if self.tool_state == 1:
             pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [32, self.speed >> 8 & 0xff, self.speed & 0xff]})
-        elif message["tool_state"] == -1:
+        elif self.tool_state == -1:
             pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [32, -self.speed >> 8 & 0xff, -self.speed & 0xff]})
         else:
             pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [32, 0x00, 0x00]})
+
+    def Listener(self, message):   
+        self.tool_state = message["tool_state"]
 
 class __Test_Case_Send__(Module):
     def __init__(self):

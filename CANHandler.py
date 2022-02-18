@@ -30,7 +30,7 @@ class CANHandler(Module):
         
         connected = False
 
-        for i in range(12):
+        for i in range(14):
             try:
                 self.bus = at_serial_can.ATSerialBus(channel=f"COM{i}", ttyBaudrate=115200, bitrate=250000)
                 print(f"Connected COM{i}")
