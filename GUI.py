@@ -68,6 +68,7 @@ class GUI(Module):
         self.background = self.pygame.Surface(self.mode)
         self.background.fill(self.pygame.Color(self.turquoise))
         self.comic_font_large = self.pygame.font.SysFont("Comic Sans MS", 160)
+        self.comic_font_medium = self.pygame.font.SysFont("Comic Sans MS", 80)
         self.comic_font_small = self.pygame.font.SysFont("Comic Sans MS", 40)
         self.active_tools = ("gamepad.gripper", "gamepad.EM1", "gamepad.EM2", "gamepad.erector")
 
@@ -145,9 +146,21 @@ class GUI(Module):
     def fr_thrust(self,color,TBF):
         def_pos_1 = (1615, 235)
         def_pos_2 = (1665, 185)
-        test_pos_1 = (1615 +100*TBF ,235 + 100*TBF)
-        test_pos_2 = (1665 + 100*TBF, 185+100*TBF)
+        test_pos_1 = (1615 +100*-TBF ,235 + 100*-TBF)
+        test_pos_2 = (1665 + 100*-TBF, 185+100*-TBF)
         self.pygame.draw.polygon(self.screen, color, [(def_pos_1),(def_pos_2),(test_pos_2),(test_pos_1)])
+
+    def up_thrust(self, color_1,color_2, TBF):
+        if TBF > 0:
+             self.dcircle(color_1, (1501, 210), 40 * TBF)
+        elif TBF < 0:
+            self.dcircle(color_2, (1501, 210), 40 * -TBF)
+
+    def down_thrust(self, color_1,color_2, TBF):
+        if TBF > 0:
+             self.dcircle(color_1, (1501, 490), 40 * TBF)
+        elif TBF < 0:
+            self.dcircle(color_2, (1501, 490), 40 * -TBF)
 
     def bl_thrust(self, color, TBF):
         def_pos_1 = (1340, 510)
@@ -155,9 +168,6 @@ class GUI(Module):
         test_pos_1 = (1340 - 100 * TBF, 510 - 100 * TBF)
         test_pos_2 = (1390 - 100 * TBF, 460 - 100 * TBF)
         self.pygame.draw.polygon(self.screen, color, [(def_pos_1), (def_pos_2), (test_pos_2), (test_pos_1)])
-
-
-
 
     def em_activation(self):
         if self.em1r == True:
@@ -192,13 +202,30 @@ class GUI(Module):
          self.screen.blit(self.rov_upview, (1300, 150))
 
     def profile_label(self):
-        self.rect(self.white, (1200, 740, 170, 170))
+        if self.profile == "A":
+            coloring = self.blue
+        elif self.profile == "B":
+            coloring = self.yellow
+        elif self.profile == "C":
+            coloring = self.dark_red
+        elif self.profile =="D":
+            coloring = self.white
+        self.rect(coloring, (1250, 740, 170, 170))
+        self.profile_labeler = self.comic_font_small.render("Current Profile:",False, (0,0,0))
         self.profile_info = self.comic_font_large.render(str(self.profile), False, (0,0,0))
-        self.screen.blit(self.profile_info,(1230,700))
+        self.screen.blit(self.profile_info,(1280,700))
+        self.screen.blit(self.profile_labeler,(1230,660))
 
     def inversion(self):
-        self.inverting = self.comic_font_large.render(str(self.invert), False, (0,0,0))
-        self.screen.blit(self.inverting,(1430,700))
+        self.inversion_labeler = self.comic_font_small.render("Inversion:",False, (0,0,0))
+        self.inverting = self.comic_font_medium.render(str(self.invert), False, (0,0,0))
+        self.screen.blit(self.inverting,(1630,700))
+        self.screen.blit(self.inversion_labeler, (1630,650))
+        if self.invert == True:
+            coloring = self.blue
+        else:
+            coloring = self.dark_red
+        self.rect(coloring, (1630, 800, 200, 100))
 
     def thruster_data(self):
         if len(self.thruster) == 6:
@@ -242,8 +269,8 @@ class GUI(Module):
         self.updown_markers()
         self.updown(BL,BR)
         self.gripper_display()
-        self.plottings(LLR,LUD,200,200)
-        self.plottings(-RLR,RUD,500,200)
+        self.plottings(LLR,-LUD,200,200)
+        self.plottings(RLR,-RUD,500,200)
         self.em_back()
         self.em_activation()
         self.rov_image()
@@ -251,7 +278,10 @@ class GUI(Module):
         self.br_thrust(self.yellow, self.TBR)
         self.fr_thrust(self.yellow, self.TFR)
         self.bl_thrust(self.yellow, self.TBL)
+        self.up_thrust(self.yellow,self.blue, self.TUF)
+        self.down_thrust(self.yellow, self.blue, self.TUB)
         self.profile_label()
-        print(self.TBL)
+        self.inversion()
+        print(self.TUF)
         
         self.pygame.display.flip()
