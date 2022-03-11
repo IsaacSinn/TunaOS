@@ -26,8 +26,8 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
             return_value, tv = camera.read()
-            cv2.imwrite(r'.\GUI Assests\test image.jpeg', tv)
-            image = pygame.image.load(r'.\GUI Assests\test image.jpeg')
+            cv2.imwrite(r'.\GUI Assets\test image.jpeg', tv)
+            image = pygame.image.load(r'.\GUI Assets\test image.jpeg')
         elif event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
