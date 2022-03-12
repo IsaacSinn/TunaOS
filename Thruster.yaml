@@ -53,8 +53,8 @@ ThrusterUF:
   Deadzone: 0.1
 ThrusterUB:
   Name: ThrusterUB
-  Address: 0x16
-  Invert: True
+  Address: 0x17
+  Invert: False
   Position: 0,-0.182,0.056
   Direction: 0,0,1
   Scale: 2.65
