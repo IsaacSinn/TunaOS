@@ -30,8 +30,8 @@ ControlProfileC = ControlProfile(50, 50, "C")
 ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
-#CANHandler = CANHandler()
-Logger = Logger(True, True, None, "log.sent") # FILE, PRINT, RATE_LIMITER, TOPICS
+CANHandler = CANHandler()
+Logger = Logger(True, False, None, "log") # FILE, PRINT, RATE_LIMITER, TOPICS
 
 # TOOLS
 EM1 = EM("EM1", "0x30")
@@ -48,7 +48,7 @@ mm.register(
             (ControlProfileD, 1),
             (ThrusterPower, 60),
             (Thrusters, 15),
-            #(CANHandler, 60),
+            (CANHandler, 60),
             (EM1, 1),
             (EM2, 1),
             (Gripper, 15)

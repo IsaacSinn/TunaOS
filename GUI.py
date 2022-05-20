@@ -282,6 +282,6 @@ class GUI(Module):
         self.down_thrust(self.yellow, self.blue, self.TUB)
         self.profile_label()
         self.inversion()
-        print(self.TUF)
+        #print(self.TUF)
         
         self.pygame.display.flip()
