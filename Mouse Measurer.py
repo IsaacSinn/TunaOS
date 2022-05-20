@@ -6,6 +6,9 @@ event = pygame.event.get()
 clock = pygame.time.Clock()
 clock.tick(120)
 reset = False
+measure_taking = False
+counters = 0
+cal =  666
 
 image1 = pygame.image.load(r'.\GUI Assets\test image1.jpeg')
 image2 = pygame.image.load(r'.\GUI Assets\test image2.jpeg')
@@ -39,7 +42,7 @@ lengthtext2 = font.render(length_text[1], True, white, black)
 lengthtext3 = font.render(length_text[2], True, white, black)
 lengthtext = [lengthtext1, lengthtext2, lengthtext3]
 
-keyref = fontss.render("N (Change Slot), A (take photo), T (Reset Reference)", True, white, black )
+keyref = fontss.render("W (Change Slot), A (take photo), S (Reset Reference), D (Measurement taking) ", True, white, black )
 keyrefrect = keyref.get_rect()
 keyrefrect.center = (260, 500)
 
@@ -87,11 +90,11 @@ length_ref = 10
 
 #Storage for coords
 
-coords = [[(0,0), (0,0)],[(0,0), (0,0)],[(0,0), (0,0)]]
+coords = [[],[],[]]
 
-internal_reference = 100000
-new_length = 100000
-measurement = 1000000
+internal_reference = 10000000000000
+new_length = 100000000000000000000
+measurement = 1000000000
 
 comic_font_small = pygame.font.SysFont("Comic Sans MS", 40)
 
@@ -117,7 +120,7 @@ while True:
             pygame.quit()
             sys.exit()
 
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_n:
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_w:
             t = int(input("Choose new fish slot, 0, 1, 2"))
 
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
@@ -131,15 +134,26 @@ while True:
                 coords[t].append((mousex, mousey))
                 counter = counter + 1
                 print(counter)
-            if counter == 2:
+            if counter > 1:
                 print("entered")
-                internal_reference = (((coords[-1][-1][0] - coords[t][-2][0]) ** 2) + ((coords[t][-1][1] - coords[t][-2][1]) ** 2)) ** 0.5
+                internal_reference = (((coords[t][-1][0] - coords[t][-2][0]) ** 2) + ((coords[t][-2][1] - coords[t][-1][1]) ** 2)) ** 0.5
+                cal = 10
                 reset = False
 
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+            measure_taking = True
+
+        elif measure_taking == True:
+            if click[0] == True:
+                coords[t].append((mousex, mousey))
+                counters +=1
+            if counters >2:
+                cal = length_measure(length_ref, internal_reference)
+                measure_taking == False
 
         lengthtextrefresh()
         imagerefresh()
-        cal = length_measure(length_ref, internal_reference)
+
         length_text[t] = str(round(cal, 6)) + "Cm"
 
         for i in range(3):
@@ -147,7 +161,8 @@ while True:
 
         display_surface.blit(keyref, keyrefrect)
         display_surface.blit((imagers[t]), (0, 0))
-        pygame.draw.line(display_surface, (white),coords[t][-1], coords[t][-2],3)
+        if len(coords[t])>1:
+            pygame.draw.line(display_surface, (white),coords[t][-1], coords[t][-2],3)
         pygame.display.flip()
 
 
