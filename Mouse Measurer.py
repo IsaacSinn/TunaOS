@@ -2,12 +2,11 @@ import pygame
 import cv2
 import time
 
+#Initialization
 capture = cv2.VideoCapture(0)
 success, camera_image = capture.read()
 
 clock = pygame.time.Clock()
-
-
 pygame.init()
 event = pygame.event.get()
 clock = pygame.time.Clock()
@@ -25,18 +24,12 @@ black = (0,0,0)
 blue = (0,0,100)
 white = (255,255,255)
 
-
-
-
-
 average = 0
 N = 0
 a = 0
 b = 0
 biomass = 0
-
 whyyy = 0
-#Initialization
 
 display_surface = pygame.display.set_mode((1100,700))
 pygame.display.set_caption('Basic Measurer')
@@ -104,9 +97,14 @@ lengthtext3 = font.render(length_text[2], True, white)
 lengthtext = [lengthtext1, lengthtext2, lengthtext3]
 biomass_indicator = font.render(str(biomass), True, black)
 
-keyref = fontss.render("W (Change Slot), A (take photo), S (Reset Reference), D (Measurement taking), Q (Biomass Calculations)", True, black )
+keyref = fontss.render("W (Change Fish), A (take photo), S (Reset Reference), D (Measurement taking), E (Biomass Calculations)", True, black )
 keyrefrect = keyref.get_rect()
 keyrefrect.center = (540*re_wid, 670*re_hei)
+
+subref = fontss.render("Press Confirm your choice of fish", True, black )
+subrefrect = subref.get_rect()
+subrefrect.center = (600*re_wid, 620*re_hei)
+
 
 #this draws box around text
 for i in range(3):
@@ -164,14 +162,9 @@ while running == True :
     click=pygame.mouse.get_pressed()
     mousex,mousey=pygame.mouse.get_pos()
     runs = True
-    # width, height = pygame.display.get_surface().get_size()
-    #
-    # re_wid = width/1100
-    # re_hei = height/700
 
     display_surface.fill(white)
     for event in pygame.event.get():
-
         width , height= pygame.display.get_surface().get_size()
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
@@ -179,14 +172,12 @@ while running == True :
             if t == 0:
                 cv2.imwrite(r'.\GUI Assets\test image1.jpeg', tv)
                 image1 = pygame.image.load(r'.\GUI Assets\test image1.jpeg')
-
             elif t == 1:
                 cv2.imwrite(r'.\GUI Assets\test image2.jpeg', tv)
                 image2 = pygame.image.load(r'.\GUI Assets\test image2.jpeg')
             elif t == 2:
                 cv2.imwrite(r'.\GUI Assets\test image3.jpeg', tv)
                 image3 = pygame.image.load(r'.\GUI Assets\test image3.jpeg')
-
 
         elif event.type == pygame.QUIT:
             pygame.quit()
@@ -226,12 +217,10 @@ while running == True :
 
         elif biomass_cal == True:
             biomass_cal = False
-            a = int(input("Provide the value of a: "))
-            b = int(input("Provide the value of b: "))
-            N = int(input("Provide the value of N:"))
+            a = float(input("Provide the value of a: "))
+            b = float(input("Provide the value of b: "))
+            N = float(input("Provide the value of N:"))
             biomass = round((N*a*(average**b)),3)
-
-        #####################
 
         #Resetting Reference
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
@@ -251,7 +240,6 @@ while running == True :
                 reset = False
                 counter+=1
 
-        #########################
         #Taking measurement
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_d:
             measure_taking = True
@@ -269,27 +257,22 @@ while running == True :
                 length[t] = cal
                 measure_taking == False
 
+        #biomass calculations
         biomass_indicator = font.render(("Biomass: " + str(biomass)) + " Kg", True, black)
         biomass_rect = biomass_indicator.get_rect()
         biomass_rect.center = (900, 420)
 
-        #calculate Biomass
-
-
-        #########################
         #Elements Refresh
         lengthtextrefresh()
         imagerefresh()
         length_text[t] = "Fish " + str(t + 1) + ": " + str(round(length[t], 3)) + " cm"
 
         #Display output
-        time.sleep(0.1)
         for i in range(3):
             display_surface.blit(lengthtext[i], lengthtextrect[i])
         display_surface.blit(keyref, keyrefrect)
         display_surface.blit((imagers[t]), (0, 0))
         button_maker()
-
 
         display_surface.blit(biomass_indicator, biomass_rect)
 
@@ -312,18 +295,13 @@ while running == True :
         avg_rect = avg_indicator.get_rect()
         avg_rect.center = (900, 300)
         display_surface.blit(avg_indicator, avg_rect)
+        display_surface.blit(subref, subrefrect)
+
 
         keyrefrect.center = (520 * re_wid, 670 * re_hei)
         average = round((float(sum(length)) / 3),3)
-
         biomass = round((N * a * (average ** b)), 3)
 
         if len(coords[t])>1:
             pygame.draw.line(display_surface, (white),coords[t][-1], coords[t][-2],3)
-
         pygame.display.flip()
-        counting +=1
-        print(counting)
-
-
-
