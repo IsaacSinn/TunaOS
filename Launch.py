@@ -31,12 +31,12 @@ ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
 CANHandler = CANHandler()
-Logger = Logger(True, False, None, "log") # FILE, PRINT, RATE_LIMITER, TOPICS
+Logger = Logger(False, True, None, "log") # FILE, PRINT, RATE_LIMITER, TOPICS
 
 # TOOLS
-EM1 = EM("EM1", "0x30")
-EM2 = EM("EM2", "0x32")
-Gripper = Gripper("gripper", "0x22", "10000") # SPEED 0 - 32767
+EM1 = EM("EM1", "0x32")
+EM2 = EM("EM2", "0x30")
+Gripper = Gripper("gripper", "0x23", "11000") # SPEED 0 - 32767
 
 # REGISTERING MODULES (INSTANCE, REFRESH PER SECOND)
 mm.register(
@@ -47,15 +47,15 @@ mm.register(
             (ControlProfileC, 1),
             (ControlProfileD, 1),
             (ThrusterPower, 60),
-            (Thrusters, 15),
-            (CANHandler, 60),
-            (EM1, 1),
-            (EM2, 1),
-            (Gripper, 15)
+            (Thrusters, 10),
+            (CANHandler, 1),
+            (EM1, 10),
+            (EM2, 10),
+            (Gripper, 10)
 )
 
 mm.start_all()
 
 while True:
     pygs.get_pygame().event.get()
-    pygs.get_pygame().time.delay(int(2)) # ms
+    pygs.get_pygame().time.delay((2)) # ms
