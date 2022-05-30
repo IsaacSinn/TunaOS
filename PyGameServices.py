@@ -38,6 +38,7 @@ class PyGameServices(Module):
     @classmethod
     def get_joystick(cls, ID = 0):
         if cls.joystick is None:
+            print("Joystick count: ", pygame.joystick.get_count())
             cls.joystick = pygame.joystick.Joystick(ID)
             cls.joystick.init()
 

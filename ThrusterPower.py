@@ -14,6 +14,7 @@ from ModuleBase import Module
 from pubsub import pub
 import numpy as np
 import yaml
+import time
 
 #Scale constants
 Scale_Constants = [1,1,1,1,1,1,1]
@@ -33,6 +34,7 @@ class ThrusterPower(Module):
         self.ThrusterMatrix = np.zeros((6,1))
         self.Thrusters = (self.ThrusterFL, self.ThrusterFR, self.ThrusterBL, self.ThrusterBR, self.ThrusterUF, self.ThrusterUB)
         self.counter = 0
+        self.finalList = None
 
         for Thruster in self.Thrusters: # 6x6 Matrix
             ThrusterPosition = np.array(tuple(map(float, Thruster["Position"].split(','))))
@@ -113,11 +115,12 @@ class ThrusterPower(Module):
 
         finalList = finalList.reshape(1,6)
         finalList = finalList.tolist()
-        finalList = [item for item in finalList if isinstance(item,list)]
-        pub.sendMessage("thruster.power", message = {"thruster_power": finalList})
+        self.finalList = [item for item in finalList if isinstance(item,list)]
+        
 
     def run(self):
-        pass
+        if self.finalList is not None:
+            pub.sendMessage("thruster.power", message = {"thruster_power": self.finalList})
 
 class __Test_Case_Single__(Module):
     def __init__(self):

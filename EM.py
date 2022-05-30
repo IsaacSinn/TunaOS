@@ -11,14 +11,20 @@ class EM(Module):
         super().__init__()
         self.device = device
         self.address = address
+        self.data_L = None
+        self.data_R = None
         exec(f"pub.subscribe(self.Listener, 'gamepad.{self.device}')")
 
     def run(self):
-        pass
+        if self.data_L is not None:
+            pub.sendMessage("can.send", message = {"address": eval(self.address), "data": self.data_L})
+        
+        if self.data_R is not None:
+            pub.sendMessage("can.send", message = {"address": eval(self.address), "data": self.data_R})
 
     def Listener(self, message):
-        pub.sendMessage("can.send", message = {"address": eval(self.address), "data": EMLRcommand["EM_L"][1 if message["L"] else 0]})
-        pub.sendMessage("can.send", message = {"address": eval(self.address), "data": EMLRcommand["EM_R"][1 if message["R"] else 0]})
+        self.data_L = EMLRcommand["EM_L"][1 if message["L"] else 0]
+        self.data_R = EMLRcommand["EM_R"][1 if message["R"] else 0]
 
 class __Test_Case_Send__(Module):
     def __init__(self):
