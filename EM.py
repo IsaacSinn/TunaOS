@@ -16,6 +16,7 @@ class EM(Module):
         exec(f"pub.subscribe(self.Listener, 'gamepad.{self.device}')")
 
     def run(self):
+        #print(self.address, self.data_L, self.data_R)
         if self.data_L is not None:
             pub.sendMessage("can.send", message = {"address": eval(self.address), "data": self.data_L})
         
