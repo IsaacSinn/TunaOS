@@ -82,7 +82,7 @@ class Joystick(Module):
 
         #Active Tool Modes
         self.active_tool = ""
-        self.active_tools = ("gamepad.gripper", "gamepad.EM1", "gamepad.EM2", "gamepad.erector")
+        self.active_tools = ("gamepad.gripper", "gamepad.EM1", "gamepad.EM2", "gamepad.actuator")
         self.bumper_hold = (True, False, False, True)  #Determines if the corresponding active tool requires holding down activation
         self.em_states ={"gamepad.EM1L": False, "gamepad.EM1R": False, "gamepad.EM2L": False, "gamepad.EM2R":False}
         self.last_tool = ""

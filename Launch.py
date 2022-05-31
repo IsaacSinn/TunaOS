@@ -15,6 +15,7 @@ from CANHandler import CANHandler
 from EM import EM
 from Gripper import Gripper
 from Logger import Logger
+from Actuator import Actuator
 
 mm = ModuleManager()
 pygs = PyGameServices()
@@ -31,12 +32,13 @@ ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
 CANHandler = CANHandler()
-Logger = Logger(False, True, None, "log") # FILE, PRINT, RATE_LIMITER, TOPICS
+Logger = Logger(False, True, None, "log.sent.0x23") # FILE, PRINT, RATE_LIMITER, TOPICS
 
 # TOOLS
 EM1 = EM("EM1", "0x32")
 EM2 = EM("EM2", "0x30")
 Gripper = Gripper("gripper", "0x23", "11000") # SPEED 0 - 32767
+Actuator = Actuator("actuator", "0x22", "11000")
 
 # REGISTERING MODULES (INSTANCE, REFRESH PER SECOND)
 mm.register(
@@ -47,11 +49,12 @@ mm.register(
             (ControlProfileC, 1),
             (ControlProfileD, 1),
             (ThrusterPower, 60),
-            (Thrusters, 10),
+            (Thrusters, 15),
             (CANHandler, 1),
-            (EM1, 10),
-            (EM2, 10),
-            (Gripper, 10)
+            (EM1, 5),
+            (EM2, 5),
+            (Gripper, 10),
+#            (Actuator, 5)
 )
 
 mm.start_all()
