@@ -3,7 +3,7 @@ import cv2
 import time
 
 #Initialization
-capture = cv2.VideoCapture(0)
+capture = cv2.VideoCapture(4)
 success, camera_image = capture.read()
 
 clock = pygame.time.Clock()
