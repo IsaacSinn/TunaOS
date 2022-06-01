@@ -1,4 +1,3 @@
-from re import L
 import cv2
 import pygame 
 
@@ -6,7 +5,9 @@ import pygame
 clock = pygame.time.Clock()
 clock.tick(60)
 pygame.display.init()
-res = (640, 800)
+pygame.font.init()
+
+res = (640, 650)
 display = pygame.display.set_mode(res) 
 
 #opencv camera
@@ -37,6 +38,17 @@ len_once = 0
 #arrays for coords 
 coords = [(50,50), (60,60)]
 ref_coords = [(50,50), (60,60)]
+
+#labels and fonts
+fonts = pygame.font.Font(r'.\GUI Assets\comfortaa\Comfortaa-Bold.ttf', 15)
+
+label = fonts.render("E (Measure || R (Draw Reference) || T (Take Pictures) || Y (Change ref value) ", True, white)
+labelrect = label.get_rect()
+labelrect.center = (300, 500)
+
+measurement = fonts.render("Length" + str(measured), True, white)
+measurementrect = measurement.get_rect()
+measurementrect.center = (100, 550)
 
 
 def pytha(x1, y1, x2, y2, ref):
@@ -100,15 +112,20 @@ while True:
                 measured = (pytha_cal(coords[-2][0], coords[-2][1],coords[-1][0],coords[-1][1]))*ratio 
                 mea_taking = False
 
-        #pygame assets
+        #Change ref
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+            ref = float(input("New Reference Value: "))
+
         display.blit(rect_photo, (0,0))
+        display.blit(label, labelrect)
+        display.blit(measurement, measurementrect)
         pygame.draw.line(display, black, ref_coords[-1], ref_coords[-2])
         pygame.draw.line(display, white, coords[-1], coords[-2])
 
         #length
-
         if len_once>0:
-            print("Length measured",measured )
+            print("Length measured",measured)
+            measurement = fonts.render("Length" + str(measured), True, white)
 
         #refresh
         pygame.display.flip()

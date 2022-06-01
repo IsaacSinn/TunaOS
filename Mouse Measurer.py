@@ -217,6 +217,7 @@ while running == True :
 
         elif biomass_cal == True:
             biomass_cal = False
+            average = float(input("Provide the value of average"))
             a = float(input("Provide the value of a: "))
             b = float(input("Provide the value of b: "))
             N = float(input("Provide the value of N:"))
@@ -299,7 +300,7 @@ while running == True :
 
 
         keyrefrect.center = (520 * re_wid, 670 * re_hei)
-        average = round((float(sum(length)) / 3),3)
+        # average = round((float(sum(length)) / 3),3)
         biomass = round((N * a * (average ** b)), 3)
 
         if len(coords[t])>1:
