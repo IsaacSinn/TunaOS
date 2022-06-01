@@ -29,7 +29,7 @@ display_surface = pygame.display.set_mode((1200,700))
 pygame.display.set_caption('Basic Measurer')
 font = pygame.font.Font(r'.\GUI Assets\comfortaa\Comfortaa-Bold.ttf', 37)
 fonts = pygame.font.Font(r'.\GUI Assets\comfortaa\Comfortaa-Bold.ttf', 29)
-fontss = pygame.font.Font(r'.\GUI Assets\comfortaa\Comfortaa-Bold.ttf', 19)
+fontss = pygame.font.Font(r'.\GUI Assets\comfortaa\Comfortaa-Bold.ttf', 15)
 
 lengthtextrect = []
 
@@ -91,9 +91,9 @@ lengthtext3 = font.render(length_text[2], True, white)
 lengthtext = [lengthtext1, lengthtext2, lengthtext3]
 biomass_indicator = font.render(str(biomass), True, black)
 
-keyref = fontss.render("W (Change Fish), A (take photo//Long press for live feed), S (Reset Ref), D (Measurement taking), E (Biomass Calculations)", True, black )
+keyref = fontss.render("W (Change Fish), A (take photo), S (Reset Ref), D (Measurement taking), E (Biomass Calculations)", True, black )
 keyrefrect = keyref.get_rect()
-keyrefrect.center = (680*re_wid, 670*re_hei)
+keyrefrect.center = (600*re_wid, 670*re_hei)
 
 subref = fontss.render("Press Confirm your choice of fish", True, black )
 subrefrect = subref.get_rect()
@@ -161,8 +161,6 @@ while running == True :
     for event in pygame.event.get():
 
         return_value, tv = camera.read()
-        cv2.imshow('Live feed', tv)
-
         width , height= pygame.display.get_surface().get_size()
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
