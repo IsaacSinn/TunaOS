@@ -1,16 +1,10 @@
 import pygame
 import cv2
-import time
 
 #Initialization
-capture = cv2.VideoCapture(4)
-success, camera_image = capture.read()
-
-clock = pygame.time.Clock()
 pygame.init()
 event = pygame.event.get()
-clock = pygame.time.Clock()
-clock.tick(30)
+
 reset = False
 measure_taking = False
 counters = 0
@@ -31,7 +25,7 @@ b = 0
 biomass = 0
 whyyy = 0
 
-display_surface = pygame.display.set_mode((1100,700))
+display_surface = pygame.display.set_mode((1200,700))
 pygame.display.set_caption('Basic Measurer')
 font = pygame.font.Font(r'.\GUI Assets\comfortaa\Comfortaa-Bold.ttf', 37)
 fonts = pygame.font.Font(r'.\GUI Assets\comfortaa\Comfortaa-Bold.ttf', 29)
@@ -97,9 +91,9 @@ lengthtext3 = font.render(length_text[2], True, white)
 lengthtext = [lengthtext1, lengthtext2, lengthtext3]
 biomass_indicator = font.render(str(biomass), True, black)
 
-keyref = fontss.render("W (Change Fish), A (take photo), S (Reset Reference), D (Measurement taking), E (Biomass Calculations)", True, black )
+keyref = fontss.render("W (Change Fish), A (take photo//Long press for live feed), S (Reset Ref), D (Measurement taking), E (Biomass Calculations)", True, black )
 keyrefrect = keyref.get_rect()
-keyrefrect.center = (540*re_wid, 670*re_hei)
+keyrefrect.center = (680*re_wid, 670*re_hei)
 
 subref = fontss.render("Press Confirm your choice of fish", True, black )
 subrefrect = subref.get_rect()
@@ -165,10 +159,13 @@ while running == True :
 
     display_surface.fill(white)
     for event in pygame.event.get():
+
+        return_value, tv = camera.read()
+        cv2.imshow('Live feed', tv)
+
         width , height= pygame.display.get_surface().get_size()
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
-            return_value, tv = camera.read()
             if t == 0:
                 cv2.imwrite(r'.\GUI Assets\test image1.jpeg', tv)
                 image1 = pygame.image.load(r'.\GUI Assets\test image1.jpeg')
