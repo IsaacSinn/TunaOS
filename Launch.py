@@ -31,13 +31,13 @@ ControlProfileC = ControlProfile(50, 50, "C")
 ControlProfileD = ControlProfile(30, 50, "D")
 ThrusterPower = ThrusterPower()
 Thrusters = Thrusters()
-CANHandler = CANHandler()
-Logger = Logger(False, True, None, "log.sent.0x23") # FILE, PRINT, RATE_LIMITER, TOPICS
+CANHandler = CANHandler(115200) # BAUDRATE
+Logger = Logger(False, False, None, "log.sent.0x23") # FILE, PRINT, RATE_LIMITER, TOPICS
 
 # TOOLS
 EM1 = EM("EM1", "0x32")
 EM2 = EM("EM2", "0x30")
-Gripper = Gripper("gripper", "0x23", "11000") # SPEED 0 - 32767
+Gripper = Gripper("gripper", "0x23", "13000", True) # SPEED 0 - 32767, FLIP: TRUE or FALSE
 Actuator = Actuator("actuator", "0x22", "11000")
 
 # REGISTERING MODULES (INSTANCE, REFRESH PER SECOND)

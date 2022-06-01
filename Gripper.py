@@ -2,15 +2,19 @@ from ModuleBase import Module
 from pubsub import pub
 
 class Gripper(Module):
-    def __init__(self, device, address, speed):
+    def __init__(self, device, address, speed, flip):
         super().__init__()
         self.device = device
         self.speed = int(speed)
         self.address = address
+        self.flip = flip
         exec(f'pub.subscribe(self.Listener, "gamepad.{self.device}")')
         self.tool_state = 0
 
     def run(self):
+        if self.flip:
+            self.tool_state = -self.tool_state
+            
         if self.tool_state == 1:
             pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [32, self.speed >> 8 & 0xff, self.speed & 0xff]})
         elif self.tool_state == -1:

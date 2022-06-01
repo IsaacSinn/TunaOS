@@ -113,6 +113,7 @@ class Joystick(Module):
         self.bumper_hold_on = False
         self.bumper_hold_default_sent = False
         self.thumb_profile_cycle = 0
+        self.a_counter = 0
 
     def em_message(self, tool_state):
         if tool_state==1:
@@ -212,7 +213,8 @@ class Joystick(Module):
             pub.sendMessage("gamepad.invert", message = {"gamepad_invert": self.control_invert}) # For GUI
 
         if button_pressed(self.a_input):
-            pass
+            self.a_counter += 1
+            pub.sendMessage("gamepad.transect", message = {"gamepad_transect": int(self.a_counter % 2)})
 
         if button_pressed(self.north_input):
             self.change_active_tool(0)

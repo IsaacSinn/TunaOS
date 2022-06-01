@@ -7,3 +7,4 @@ python-can
 pyserial
 at_serial_can
 ratelimitingfilter
+infi.devicemanager

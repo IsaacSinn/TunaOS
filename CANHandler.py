@@ -19,34 +19,40 @@ can.receive.<arbitration_id>:
 	"timestamp" <float>
 
 '''
+
+
+
+
 import can
 import at_serial_can
 from ModuleBase import Module
 from pubsub import pub
 import threading
+from infi.devicemanager import DeviceManager
 
 class CANHandler(Module):
-    def __init__(self):
+    def __init__(self, baudrate):
         super().__init__()
         
         connected = False
-        self.counter = 0
-
-        for i in range(20):
-            try:
-                self.bus = at_serial_can.ATSerialBus(channel=f"COM{i}", ttyBaudrate=115200, bitrate=250000)
-                print(f"Connected COM{i}")
+        self.baudrate = baudrate
+        self.lock = threading.Lock()
+        self.port = None
+        
+        dm = DeviceManager()
+        dm.root.rescan()
+        for d in dm.all_devices:
+            if "USB-SERIAL CH340" in d.description:
+                self.port = "COM" + d.description[-2]
+                self.bus = at_serial_can.ATSerialBus(channel= self.port, ttyBaudrate=self.baudrate, bitrate=250000)
+                print(f"Connected {self.port}")
                 connected = True
-                break
-            except:
-                pass
         
         if not connected:
             raise Exception("NOT Connected to any CAN BUs sender, goodbye, check cable")
 
         pub.subscribe(self.message_listener, "can.send")
-        
-        self.lock = threading.Lock()
+    
 
     def message_listener(self, message):
         msg = can.Message(arbitration_id = message["address"], data = message["data"], is_extended_id = False)
@@ -74,4 +80,4 @@ class CANHandler(Module):
 
 
 if __name__ == "__main__":
-    pass
+    CANHandler = CANHandler(115200)
