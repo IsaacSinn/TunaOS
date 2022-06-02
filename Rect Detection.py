@@ -1,17 +1,18 @@
 import cv2
 import pygame 
 
+cam_id = 4
 #framerate and pygame screen
 clock = pygame.time.Clock()
 clock.tick(60)
 pygame.display.init()
 pygame.font.init()
 
-res = (640, 650)
+res = (640, 700)
 display = pygame.display.set_mode(res) 
 
 #opencv camera
-vid = cv2.VideoCapture(0)
+vid = cv2.VideoCapture(cam_id)
 
 #colours
 white = (255,255,255)
@@ -19,6 +20,7 @@ black = (0,0,0 )
 
 #assets
 rect_photo = pygame.image.load(r'.\GUI Assets\rect photo.jpeg')
+rect_photo = pygame.transform.scale(rect_photo, (640, 360))
 
 #reference size
 ref = 10
@@ -75,6 +77,7 @@ while True:
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_t:
             cv2.imwrite(r'.\GUI Assets\rect photo.jpeg', frame)
             rect_photo = pygame.image.load(r'.\GUI Assets\rect photo.jpeg')
+            rect_photo = pygame.transform.scale(rect_photo, (640, 360))
             print("Taken Photo")
 
         #Take ref taking 

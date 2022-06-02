@@ -5,6 +5,8 @@ import cv2
 pygame.init()
 event = pygame.event.get()
 
+cam_id = 4
+
 reset = False
 measure_taking = False
 counters = 0
@@ -61,9 +63,9 @@ def imagerefresh():
     global image3
     global re_wid
     global re_hei
-    image1 = pygame.transform.scale(image1, (int(640*imagescale),int(480*imagescale)))
-    image2 = pygame.transform.scale(image2, (int(640*imagescale),int(480*imagescale)))
-    image3 = pygame.transform.scale(image3, (int(640*imagescale),int(480*imagescale)))
+    image1 = pygame.transform.scale(image1, (int(704*imagescale),int(397*imagescale)))
+    image2 = pygame.transform.scale(image2, (int(704*imagescale),int(397*imagescale)))
+    image3 = pygame.transform.scale(image3, (int(704*imagescale),int(397*imagescale)))
     imagers = [image1, image2, image3]
 
 length_text = ["0 Cm", "Fish 2: 0 cm", "Fish 3: 0 cm"]
@@ -76,13 +78,11 @@ def button_maker():
         pygame.draw.rect(display_surface, buttcolor[0], [20*re_wid, 590*re_hei, 50,50])
         pygame.draw.rect(display_surface, buttcolor[1], [90*re_wid, 590*re_hei, 50,50])
         pygame.draw.rect(display_surface, buttcolor[2], [160*re_wid, 590*re_hei, 50,50])
-        pygame.draw.rect(display_surface, black, [230*re_wid, 590*re_hei, 180,50])
         pygame.draw.rect(display_surface, white, [20*re_wid, 530*re_hei, 220,50])
 
         display_surface.blit(slottext1, (35*re_wid,600*re_hei))
         display_surface.blit(slottext2, (105*re_wid,600*re_hei))
         display_surface.blit(slottext3, (175*re_wid,600*re_hei))
-        display_surface.blit(confirm, (240*re_wid, 600*re_hei))
         display_surface.blit(slot_label, (30*re_wid, 540*re_hei))
 
 lengthtext1 = font.render(length_text[0], True, white)
@@ -94,11 +94,6 @@ biomass_indicator = font.render(str(biomass), True, black)
 keyref = fontss.render("W (Change Fish), A (take photo), S (Reset Ref), D (Measurement taking), E (Biomass Calculations)", True, black )
 keyrefrect = keyref.get_rect()
 keyrefrect.center = (600*re_wid, 670*re_hei)
-
-subref = fontss.render("Press Confirm your choice of fish", True, black )
-subrefrect = subref.get_rect()
-subrefrect.center = (600*re_wid, 620*re_hei)
-
 
 #this draws box around text
 for i in range(3):
@@ -138,7 +133,7 @@ def length_measure():
     return cal
 
 #Camera Input
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(cam_id)
 
 #Default Reference length
 length_ref = [9]*3
@@ -191,20 +186,21 @@ while running == True :
                 buttcolor[0] = blue
                 buttcolor[1] = black
                 buttcolor[2] = black
+                slot = False
             elif click[0] and 90*re_wid <= mousex <= 140*re_wid and 590*re_hei <= mousey <= 640*re_hei:
                 t = 1
                 buttcolor[1] = blue
                 buttcolor[0] = black
                 buttcolor[2] = black
+                slot = False
             elif click[0] and 160*re_wid <= mousex <= 210*re_wid and 590*re_hei <= mousey <= 640*re_hei:
                 t = 2
                 buttcolor[2] = blue
                 buttcolor[1] = black
                 buttcolor[0] = black
-            elif click[0] and 230*re_wid <= mousex <= 430*re_wid and 590*re_hei <= mousey <= 640*re_hei:
                 slot = False
-                print(slot)
-                break
+            print(slot)
+            break
 
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_e:
             biomass_cal =True
@@ -212,7 +208,7 @@ while running == True :
 
         elif biomass_cal == True:
             biomass_cal = False
-            average = float(input("Provide the value of average"))
+            average = float(input("Provide the value of average: "))
             a = float(input("Provide the value of a: "))
             b = float(input("Provide the value of b: "))
             N = float(input("Provide the value of N:"))
@@ -274,28 +270,26 @@ while running == True :
 
         a_indicator = font.render(("A: " + str(a)), True, black)
         a_rect = a_indicator.get_rect()
-        a_rect.center = (800, 350)
+        a_rect.center = (800, 470)
         display_surface.blit(a_indicator, a_rect)
 
         b_indicator = font.render(("B: "+ str(b)), True,  black)
         b_rect = b_indicator.get_rect()
-        b_rect.center = (900, 350)
+        b_rect.center = (800, 520)
         display_surface.blit(b_indicator, b_rect)
 
         n_indicator = font.render(("N: "+ str(N)), True, black)
         n_rect = n_indicator.get_rect()
-        n_rect.center = (1000, 350)
+        n_rect.center = (800, 570)
         display_surface.blit(n_indicator, n_rect)
 
-        avg_indicator = font.render(("Average: "+ str(average) + "cm"), True, black)
+        laverage = round((float(sum(length)) / 3),3)
+        avg_indicator = font.render(("Average: "+ str(laverage) + "cm"), True, black)
         avg_rect = avg_indicator.get_rect()
         avg_rect.center = (900, 300)
         display_surface.blit(avg_indicator, avg_rect)
-        display_surface.blit(subref, subrefrect)
-
 
         keyrefrect.center = (520 * re_wid, 670 * re_hei)
-        # average = round((float(sum(length)) / 3),3)
         biomass = round((N * a * (average ** b)), 3)
 
         if len(coords[t])>1:
