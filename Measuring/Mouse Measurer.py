@@ -5,7 +5,7 @@ import cv2
 pygame.init()
 event = pygame.event.get()
 
-cam_id = 4
+cam_id = 0
 
 reset = False
 measure_taking = False
@@ -124,11 +124,14 @@ def length_measure():
     global t
     global length_ref
     global internal_reference
-    try:
-        ratio = float(length_ref[t]/internal_reference[t])
-    except ZeroDivisionError:
-        ratio = 0
-            
+    oops = 0
+    while oops == 0:
+        try:
+            ratio = float(length_ref[t]/internal_reference[t])
+            oops+=1
+        except ZeroDivisionError:
+            oops = 0 
+
     new_length = (((coords[t][-1][0] - coords[t][-2][0]) ** 2) + ((coords[t][-1][1] - coords[t][-2][1]) ** 2)) ** 0.5
     cal= ratio * new_length
     return cal
@@ -172,6 +175,7 @@ while running == True :
 
         elif event.type == pygame.QUIT:
             pygame.quit()
+            sys.exit()
 
         #Fish Slot
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_w :
@@ -224,7 +228,7 @@ while running == True :
             print(reset)
             print(counter)
             if click[0] == True:
-                coords[t].append((mousex, mousey))
+                coords[t].append((mousex + counter, mousey+counter))
                 counter = counter + 1
             if counter == 2:
                 internal_reference[t ] = (((coords[t][-1][0] - coords[t][-2][0]) ** 2) + ((coords[t][-2][1] - coords[t][-1][1]) ** 2)) ** 0.5
