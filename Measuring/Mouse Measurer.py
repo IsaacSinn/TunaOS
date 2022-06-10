@@ -12,9 +12,7 @@ measure_taking = False
 counters = 0
 cal =  00000
 slot = False
-unused = False
 measuring = False
-counting = 0
 
 black = (0,0,0)
 blue = (0,0,100)
@@ -25,7 +23,6 @@ N = 0
 a = 0
 b = 0
 biomass = 0
-whyyy = 0
 
 display_surface = pygame.display.set_mode((1200,700))
 pygame.display.set_caption('Basic Measurer')
@@ -46,9 +43,9 @@ biomass_cal = False
 length = [0.0,0.0,0.0]
 
 buttcolor = [blue, black, black ]
-slottext1 = font.render("0", True, white)
-slottext2 = font.render("1", True, white)
-slottext3 = font.render("2", True, white)
+slottext1 = font.render("1", True, white)
+slottext2 = font.render("2", True, white)
+slottext3 = font.render("3", True, white)
 confirm  = font.render("Confirm", True, white)
 slot_label = fonts.render("Choose Fish", True, black)
 
@@ -252,9 +249,6 @@ while running == True :
                 counters +=1
                 print(counters)
             measure_taking == False
-            #elif counters == 2 and measure_taking == True :
-        length[t] = length_measure()
-
 
         #biomass calculations
         biomass_indicator = font.render(("Biomass: " + str(biomass)) + " Kg", True, black)
@@ -262,6 +256,9 @@ while running == True :
         biomass_rect.center = (900, 420)
 
         #Elements Refresh
+
+        length[t] = length_measure()
+
         for i in range(3):
             length_text[t] = "Fish " + str(t + 1) + ": " + str(round(length[t], 2)) + " cm"
 
@@ -295,7 +292,7 @@ while running == True :
         laverage = round((float(sum(length)) / 3),1)
         avg_indicator = font.render(("Average: "+ str(laverage) + "cm"), True, black)
         avg_rect = avg_indicator.get_rect()
-        avg_rect.center = (900, 300)
+        avg_rect.center = (920, 300)
         display_surface.blit(avg_indicator, avg_rect)
 
         keyrefrect.center = (520 * re_wid, 670 * re_hei)
