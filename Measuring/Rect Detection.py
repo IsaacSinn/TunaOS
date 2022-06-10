@@ -35,7 +35,7 @@ mea_count = 0
 mea_taking = False 
 
 len_once = 0
-
+.
 #arrays for coords 
 coords = [(50,50), (60,60)]
 ref_coords = [(50,50), (60,60)]

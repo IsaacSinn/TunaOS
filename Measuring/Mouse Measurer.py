@@ -49,6 +49,9 @@ slottext3 = font.render("3", True, white)
 confirm  = font.render("Confirm", True, white)
 slot_label = fonts.render("Choose Fish", True, black)
 
+refcod_1 = [0,0]
+refcod_2 = [0,0] 
+
 imagescale = 1.05
 re_wid = 1
 re_hei = 1
@@ -124,13 +127,11 @@ def length_measure():
     global t
     global length_ref
     global internal_reference
-    oops = 0
-    while oops == 0:
-        try:
-            ratio = float(length_ref[t]/internal_reference[t])
-            oops+=1
-        except ZeroDivisionError:
-            oops = 0 
+
+    try:
+        ratio = float(length_ref[t]/internal_reference[t])
+    except ZeroDivisionError:
+        ratio = 0
 
     new_length = (((coords[t][-1][0] - coords[t][-2][0]) ** 2) + ((coords[t][-1][1] - coords[t][-2][1]) ** 2)) ** 0.5
     cal= ratio * new_length
@@ -144,6 +145,9 @@ length_ref = [9]*3
 
 #Storage for coords
 coords = [[[0,0],[0,0]],[[0,0],[0,0]],[[0,0],[0,0]]]
+ref_coords = [[[0,0],[0,0]],[[0,0],[0,0]],[[0,0],[0,0]]]
+
+
 
 internal_reference = [10000000000000,1000000000000000,100000000000]
 new_length = 100000
@@ -175,16 +179,12 @@ while running == True :
 
         elif event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
 
         #Fish Slot
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_w :
             slot = True
-            print("Running")
-            print("w")
 
         elif slot == True:
-            print("Selecting")
             if click[0] and 20*re_wid <= mousex <= 70*re_wid and 590*re_hei <= mousey <= 640*re_hei:
                 t = 0
                 buttcolor[0] = blue
@@ -208,7 +208,6 @@ while running == True :
 
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_e:
             biomass_cal =True
-            print("e")
 
         elif biomass_cal == True:
             average = float(input("Provide the value of average: "))
@@ -222,16 +221,15 @@ while running == True :
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
             reset = True
             counter = 0
-            print("s")
 
         elif reset == True and counter < 2:
             print(reset)
             print(counter)
             if click[0] == True:
-                coords[t].append((mousex + counter, mousey+counter))
+                ref_coords[t].append((mousex + counter, mousey+counter))
                 counter = counter + 1
             if counter == 2:
-                internal_reference[t ] = (((coords[t][-1][0] - coords[t][-2][0]) ** 2) + ((coords[t][-2][1] - coords[t][-1][1]) ** 2)) ** 0.5
+                internal_reference[t] = (((ref_coords[t][-1][0] - ref_coords[t][-2][0]) ** 2) + ((ref_coords[t][-2][1] - ref_coords[t][-1][1]) ** 2)) ** 0.5
                 cal = 9
                 reset = False
                 counter+=1
@@ -240,7 +238,6 @@ while running == True :
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_d:
             measure_taking = True
             counters = 0
-            print("d")
 
         elif measure_taking == True :
             if click[0] == True and counters<2:
@@ -298,6 +295,9 @@ while running == True :
         keyrefrect.center = (520 * re_wid, 670 * re_hei)
         biomass = round((N * a * (average ** b)), 3)
 
+        ref_coords[t][-2]
+
         if len(coords[t])>1:
             pygame.draw.line(display_surface, (white),coords[t][-1], coords[t][-2],3)
+            pygame.draw.line(display_surface, (black),ref_coords[t][-1], ref_coords[t][-2], 3)
         pygame.display.flip()
