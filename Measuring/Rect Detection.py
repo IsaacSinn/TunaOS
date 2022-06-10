@@ -25,7 +25,6 @@ rect_photo = pygame.transform.scale(rect_photo, (640, 360))
 #reference size
 ref = 33
 ratio = float(1)
-
 measured = float(1)
 
 #keep track of process
@@ -94,7 +93,10 @@ while True:
                 ref_coords.append([x,y])
 
             elif ref_count >= 2:
-                ratio = pytha(ref_coords[-2][0], ref_coords[-2][1],ref_coords[-1][0], ref_coords[-1][1], ref)
+                try:
+                    ratio = pytha(ref_coords[-2][0], ref_coords[-2][1],ref_coords[-1][0], ref_coords[-1][1], ref)
+                except ZeroDivisionError:
+                    ratio = 0
                 ref_taking = False
 
         #Taking Measurement 
